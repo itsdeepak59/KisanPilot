@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T2 — Supabase schema, clients, and farm-profile persistence**
-- Application status: T1 is complete. All five live API smoke checks passed; Gemini function calling passed with `gemini-3.5-flash-lite`.
+- Active task: **T2 — Supabase schema, clients, and farm-profile persistence**
+- Next eligible task: none while T2 is active
+- Application status: T2 is active. Implementing the schema, Supabase clients, and profile persistence by device ID; live save/load verification awaits project credentials.
 - Last documentation update: 2026-10-30
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -72,3 +72,13 @@ Remaining work: T2 — Supabase schema, clients, and farm-profile persistence.
 Exact next step: Claim T2 and verify Supabase credentials before implementation.
 Blocker: None for T1. T2 requires Supabase URL, anon key, and service role key.
 Commit: This handoff commit (`test: complete live API smoke validation`).
+
+### 2026-10-30 — T2 claim
+Status: [~] active
+Files changed: `PROJECT_STATE.md`, `TASKS.md`.
+Checks and real calls: Claim recorded; no database calls run.
+Result: T2 is the sole active task.
+Remaining work: Add the schema migration, server/browser clients, and profile save/load path by device ID; verify it against a real Supabase project.
+Exact next step: Record the Supabase client integration decision, then implement the migration and persistence path.
+Blocker: The local `.env.local` has no nonempty Supabase URL, anon key, or service-role key, so live save/load validation is pending.
+Commit: This claim commit.
