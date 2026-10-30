@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T1 — Live API smoke tests**
-- Application status: T0 foundation is complete. The Next.js application, strict TypeScript, Tailwind, shadcn/ui baseline, environment template, and intended folders are in place.
+- Active task: **T1 — Live API smoke tests**
+- Next eligible task: none while T1 is active
+- Application status: T1 is in progress: validating the live APIs and Gemini tool calling with reproducible smoke tests.
 - Last documentation update: 2026-10-30
 - Blocking credentials: T1 requires real `GEMINI_API_KEY` and `DATA_GOV_IN_API_KEY`; Supabase and Telegram values are needed only when their dependent tasks begin.
 
@@ -41,6 +41,16 @@ Exact next step:
 Blocker:
 Commit:
 ```
+
+### 2026-10-30 — T1
+Status: [~] active
+Files changed: PROJECT_STATE.md, TASKS.md
+Checks and real calls: Confirmed T0 is complete and T1 is the first eligible task.
+Result: Claimed T1.
+Remaining work: Add and run live API smoke tests.
+Exact next step: Create smoke-test scripts, then run public API checks and credentialed checks when keys are available.
+Blocker: Gemini and data.gov.in checks require credentials.
+Commit: pending
 
 ### 2026-10-30 — T0
 Status: [x] done
