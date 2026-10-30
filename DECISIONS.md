@@ -14,11 +14,37 @@ Do not reverse or materially change a decision without adding a dated entry with
 
 ## API findings
 
-T1 has not run yet. Record each real smoke-test result here with:
+### 2026-10-30 15:57 UTC — Open-Meteo geocoding
 
-- Date and time
-- Endpoint or SDK operation tested
-- Success or failure
-- Response-shape or rate-limit quirks
-- Required code workaround
-- Whether the result blocks a later task
+- Endpoint: `https://geocoding-api.open-meteo.com/v1/search` with New Delhi, India.
+- Result: success. The returned location included latitude, longitude, country, timezone, and administrative levels through `admin3`.
+- Finding: the live response omits any administrative field that is unavailable, so later parsing must treat these fields as optional.
+- Impact: does not block T3.
+
+### 2026-10-30 15:57 UTC — Open-Meteo forecast
+
+- Endpoint: `https://api.open-meteo.com/v1/forecast` with a seven-day New Delhi request.
+- Result: success. The daily response returned `rain_sum`, `temperature_2m_min`, `temperature_2m_max`, `wind_speed_10m_max`, and `et0_fao_evapotranspiration` for seven dates.
+- Finding: the requested ET0 field is available in the live daily response.
+- Impact: does not block T3.
+
+### 2026-10-30 15:57 UTC — ISRIC SoilGrids
+
+- Endpoint: `https://rest.isric.org/soilgrids/v2.0/properties/query` for pH at 0–5 cm near New Delhi.
+- Result: failed. Both attempts were aborted after the required eight-second timeout.
+- Finding: the v2 service did not respond inside the product timeout during this check. The service documentation also describes v2 as beta and limits callers to five requests per minute.
+- Impact: blocks a successful T1 validation of SoilGrids and must be resolved before dependent soil work starts.
+
+### 2026-10-30 15:57 UTC — data.gov.in mandi API
+
+- Endpoint prepared: `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070`.
+- Result: not called because `DATA_GOV_IN_API_KEY` is absent from `.env.local`.
+- Impact: blocks the credentialed portion of T1 and later mandi work.
+
+### 2026-10-30 15:57 UTC — Google Gemini function calling
+
+- Operation prepared: `generateContent` using a one-function declaration and an expected function call.
+- Result: not called because `GEMINI_API_KEY` is absent from `.env.local`.
+- Impact: blocks the credentialed portion of T1 and later agent work.
+
+The smoke script is `scripts/smoke/live-apis.mjs`. It enforces an eight-second timeout, one retry with a 500 ms backoff, and does not print credential values.

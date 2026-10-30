@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T1 is active. Add reproducible smoke-test scripts and record each live API result in `DECISIONS.md`.
+T1 is active and paused. The public Open-Meteo checks pass; SoilGrids timed out twice. Gemini and data.gov.in require credentials in `.env.local` before their real checks can run.
 
 ## Required note format
 

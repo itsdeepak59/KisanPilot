@@ -7,7 +7,7 @@ This file is the operational source of truth for the next human or AI agent. Upd
 - Branch: `main`
 - Active task: **T1 — Live API smoke tests**
 - Next eligible task: none while T1 is active
-- Application status: T1 is in progress: validating the live APIs and Gemini tool calling with reproducible smoke tests.
+- Application status: T1 is active and paused on required credentials after the public API smoke checks were run.
 - Last documentation update: 2026-10-30
 - Blocking credentials: T1 requires real `GEMINI_API_KEY` and `DATA_GOV_IN_API_KEY`; Supabase and Telegram values are needed only when their dependent tasks begin.
 
@@ -45,12 +45,12 @@ Commit:
 ### 2026-10-30 — T1
 Status: [~] active
 Files changed: PROJECT_STATE.md, TASKS.md
-Checks and real calls: Confirmed T0 is complete and T1 is the first eligible task.
-Result: Claimed T1.
-Remaining work: Add and run live API smoke tests.
-Exact next step: Create smoke-test scripts, then run public API checks and credentialed checks when keys are available.
-Blocker: Gemini and data.gov.in checks require credentials.
-Commit: pending
+Checks and real calls: `npm run smoke` made real calls. Open-Meteo geocoding and seven-day forecast succeeded. SoilGrids timed out on both eight-second attempts. `npm run lint` and `npx tsc --noEmit` passed.
+Result: Added `scripts/smoke/live-apis.mjs`, which tests Open-Meteo, SoilGrids, data.gov.in, and Gemini function calling with timeouts and one retry.
+Remaining work: Run the data.gov.in and Gemini checks with real credentials; decide whether to repair or replace the SoilGrids access path after the live timeout.
+Exact next step: Put `GEMINI_API_KEY` and `DATA_GOV_IN_API_KEY` in `.env.local`, then run `npm run smoke`.
+Blocker: Both credentialed checks are blocked by absent keys. SoilGrids is also unavailable within the required timeout.
+Commit: `bac5a8837f05366737796c352b2268f7226368fd`
 
 ### 2026-10-30 — T0
 Status: [x] done
