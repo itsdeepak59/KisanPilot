@@ -5,11 +5,11 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T1 — Live API smoke tests**
-- Next eligible task: none while T1 is active
-- Application status: T1 is active and paused on required credentials after the public API smoke checks were run.
+- Active task: none
+- Next eligible task: **T2 — Supabase schema, clients, and farm-profile persistence**
+- Application status: T1 is complete. All five live API smoke checks passed; Gemini function calling passed with `gemini-3.5-flash-lite`.
 - Last documentation update: 2026-10-30
-- Blocking credentials: T1 requires real `GEMINI_API_KEY` and `DATA_GOV_IN_API_KEY`; Supabase and Telegram values are needed only when their dependent tasks begin.
+- Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
 ## Start protocol for the next agent
 
@@ -25,6 +25,7 @@ This file is the operational source of truth for the next human or AI agent. Upd
 - Added `.env.example` with only required variable names and configured `.gitignore` to keep it tracked while protecting real environment files.
 - Added the planned `components/`, `lib/agent/tools/`, `scripts/smoke/`, `supabase/`, and `docs/` structure.
 - Replaced the generated landing content with a minimal KisanPilot foundation page and product metadata.
+- T1: Completed live smoke checks for Open-Meteo geocoding and forecast, SoilGrids, data.gov.in, and Gemini function calling; all five passed. The smoke script uses `gemini-3.5-flash-lite` with a forced `smoke_echo` call.
 
 ## Handoff template
 
@@ -61,3 +62,13 @@ Remaining work: T1 live API smoke tests.
 Exact next step: Claim T1, add the smoke-test scripts, then make real calls with `GEMINI_API_KEY` and `DATA_GOV_IN_API_KEY` in `.env.local`.
 Blocker: T1 requires those two credentials.
 Commit: `4ccfbebe1aa3cbdf504eef1ba45a9d562baa0b1f`
+
+### 2026-10-30 17:09 UTC — T1 completion
+Status: [x] done
+Files changed: `scripts/smoke/live-apis.mjs`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: `npm run smoke` passed all five checks at 17:09 UTC. Open-Meteo geocoding and seven-day forecast, SoilGrids, and data.gov.in returned valid response shapes; Gemini returned `smoke_echo` on `gemini-3.5-flash-lite`.
+Result: The smoke script now uses a stable low-latency Gemini model with a forced single function call. Production model selection remains open for T6.
+Remaining work: T2 — Supabase schema, clients, and farm-profile persistence.
+Exact next step: Claim T2 and verify Supabase credentials before implementation.
+Blocker: None for T1. T2 requires Supabase URL, anon key, and service role key.
+Commit: This handoff commit (`test: complete live API smoke validation`).

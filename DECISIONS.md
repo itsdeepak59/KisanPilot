@@ -48,3 +48,18 @@ Do not reverse or materially change a decision without adding a dated entry with
 - Impact: blocks the credentialed portion of T1 and later agent work.
 
 The smoke script is `scripts/smoke/live-apis.mjs`. It enforces an eight-second timeout, one retry with a 500 ms backoff, and does not print credential values.
+
+### 2026-10-30 17:09 UTC — Credentialed live smoke follow-up
+
+- Open-Meteo geocoding: success. The response included administrative fields through `admin3`.
+- Open-Meteo forecast: success. The seven-day response included rainfall, minimum and maximum temperature, wind, and ET0.
+- ISRIC SoilGrids: success. The pH query returned one layer within the script timeout.
+- data.gov.in mandi API: success. The records array contained one record.
+- Gemini function calling:
+  - `gemini-2.5-flash` returned HTTP 404 because it is unavailable to new users.
+  - `gemini-3.8-flash` exceeded both eight-second attempts, including with low thinking and a forced function call.
+  - `gemini-3.5-flash-lite` returned the expected `smoke_echo` function call with a bounded output and forced-function configuration.
+- Finding: keep `gemini-3.5-flash-lite` in the smoke test for its low-latency function-call check; select the production model separately for T6.
+- Impact: T1 is complete. The four data-source checks and Gemini function-calling check all pass.
+- References: [Gemini 3.5 Flash-Lite model](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite) and [Gemini function-calling guide](https://ai.google.dev/gemini-api/docs/generate-content/function-calling).
+

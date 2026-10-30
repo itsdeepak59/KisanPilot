@@ -131,7 +131,7 @@ async function checkGeminiToolCalling() {
     });
   }
 
-  const model = "gemini-2.5-flash";
+  const model = "gemini-3.5-flash-lite";
   const url = new URL(
     `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
   );
@@ -141,6 +141,15 @@ async function checkGeminiToolCalling() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       contents: [{ role: "user", parts: [{ text: "Call smoke_echo with city New Delhi." }] }],
+      generationConfig: {
+        maxOutputTokens: 64,
+      },
+      toolConfig: {
+        functionCallingConfig: {
+          mode: "ANY",
+          allowedFunctionNames: ["smoke_echo"],
+        },
+      },
       tools: [
         {
           functionDeclarations: [

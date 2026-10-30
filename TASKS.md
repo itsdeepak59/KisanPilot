@@ -8,7 +8,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | ID | Task | Depends on | Done when |
 | --- | --- | --- | --- |
 | T0 | [x] Foundation: create the Next.js TypeScript app, Tailwind, shadcn/ui baseline, strict configuration, `.env.example`, and the intended folders. | None | App starts and builds; no secret values are committed. |
-| T1 | [~] Live API smoke tests for Open-Meteo, data.gov.in, SoilGrids, and Gemini tool calling. | T0 | Scripts make real calls; findings and exact failures are recorded in `DECISIONS.md`. |
+| T1 | [x] Live API smoke tests for Open-Meteo, data.gov.in, SoilGrids, and Gemini tool calling. | T0 | Scripts make real calls; findings and exact failures are recorded in `DECISIONS.md`. |
 | T2 | [ ] Supabase schema, clients, and farm-profile persistence. | T0 | Migrations exist; a real profile can be saved and loaded by device ID. |
 | T3 | [ ] Geocode and weather tools with typed responses and real-response caching. | T1, T2 | Real location and forecast calls work; cache behavior is visible. |
 | T4 | [ ] Mandi tool with district-to-state fallback and no-data behavior. | T1, T2 | Real query returns source and arrival date, or a typed no-data result. |
@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T1 is active and paused. The public Open-Meteo checks pass; SoilGrids timed out twice. Gemini and data.gov.in require credentials in `.env.local` before their real checks can run.
+T1 is complete. On 2026-10-30, `npm run smoke` passed all five live checks: Open-Meteo geocoding, Open-Meteo forecast, SoilGrids, data.gov.in, and Gemini function calling. The Gemini smoke check uses `gemini-3.5-flash-lite`; earlier model errors and the successful fallback are recorded in `DECISIONS.md`.
 
 ## Required note format
 
