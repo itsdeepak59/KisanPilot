@@ -174,19 +174,19 @@ async function checkGeminiToolCalling() {
 }
 
 const checks = [
-  checkOpenMeteoGeocoding,
-  checkOpenMeteoForecast,
-  checkSoilGrids,
-  checkDataGov,
-  checkGeminiToolCalling,
+  ["open-meteo-geocoding", checkOpenMeteoGeocoding],
+  ["open-meteo-forecast", checkOpenMeteoForecast],
+  ["soilgrids", checkSoilGrids],
+  ["data-gov-in-mandi", checkDataGov],
+  ["gemini-tool-calling", checkGeminiToolCalling],
 ];
 
 const outcomes = await Promise.all(
-  checks.map(async (check) => {
+  checks.map(async ([name, check]) => {
     try {
       return await check();
     } catch (error) {
-      return result(check.name, {
+      return result(name, {
         ok: false,
         error: error instanceof Error ? error.message : String(error),
       });
