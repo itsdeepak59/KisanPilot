@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T0 — Foundation**
-- Application status: documentation and collaboration workflow are ready; application code has not started.
+- Active task: **T0 — Foundation**
+- Next eligible task: none while T0 is active
+- Application status: T0 is in progress: establishing the Next.js TypeScript foundation, Tailwind, shadcn/ui baseline, strict configuration, environment template, and intended folders.
 - Last documentation update: 2026-10-30
 - Blocking credentials: none for T0. T1 will require real `GEMINI_API_KEY` and `DATA_GOV_IN_API_KEY`; Supabase and Telegram values are needed only when their dependent tasks begin.
 
@@ -40,3 +40,13 @@ Exact next step:
 Blocker:
 Commit:
 ```
+
+### 2026-10-30 — T0
+Status: [~] active
+Files changed: PROJECT_STATE.md, TASKS.md
+Checks and real calls: Read README.md, PROJECT.md, ARCHITECTURE.md, PROJECT_STATE.md, TASKS.md, and DECISIONS.md. Confirmed no active task and T0 is the first eligible task.
+Result: Claimed T0.
+Remaining work: Create and verify the foundation scaffold.
+Exact next step: Initialize the Next.js application with strict TypeScript and Tailwind, then add the required folders and environment template.
+Blocker: None.
+Commit: pending
