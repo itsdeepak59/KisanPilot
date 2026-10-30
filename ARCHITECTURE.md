@@ -1,50 +1,135 @@
-Architecture
-Stack (frozen — see DECISIONS.md before changing)
-Next.js (App Router, TypeScript strict) + Tailwind + shadcn/ui
-Vercel AI SDK (ai, @ai-sdk/google) for streaming + tool calling with Gemini (use the current Gemini Flash model from AI Studio)
-Supabase (Postgres) for farmer profiles, advisory logs, API cache, alerts
-Telegram Bot API for proactive alerts
-Browser Web Speech API for voice input (SpeechRecognition) and output (speechSynthesis); typed input is the fallback
-Deploy: Vercel. Secrets in env vars only.
-Folder structure
-/app
-  /page.tsx                 # main chat + voice UI
-  /api/chat/route.ts        # agent endpoint (streams)
-  /api/profile/route.ts     # save/load farm profile
-  /api/alerts/run/route.ts  # runs alert check (also called by cron + demo button)
-  /api/telegram/route.ts    # Telegram webhook (links chat_id to profile)
-/lib
-  /agent/agent.ts           # system prompt + tool wiring + loop settings
-  /agent/tools/             # one file per tool (geocode, weather, mandi, soil)
-  /cache.ts                 # Supabase api_cache read/write with TTL
-  /supabase.ts
-  /i18n.ts                  # language codes: hi-IN, en-IN, + 1 regional
-/components                 # UI (chat, trace panel, profile form)
-/scripts/smoke              # T0 API smoke tests (real calls)
-/docs                       # diagram, notes
-Data model (Supabase)
-farmers(id uuid pk, device_id text, language text, lat float8, lon float8, place_name text, state text, district text, crops text[], telegram_chat_id text null, created_at)
-advisories(id, farmer_id, question text, answer text, tool_trace jsonb, created_at)
-api_cache(key text pk, source text, payload jsonb, fetched_at timestamptz, ttl_seconds int)
-alerts(id, farmer_id, kind text, message text, sent_at, delivered bool) No login in MVP: identify a farmer by a device_id stored in the browser.
-Agent tools (each returns { ok, data, source, fetched_at } or { ok:false, error })
-geocode_location(query) -> lat, lon, state, district [Open-Meteo geocoding]
-get_weather_forecast(lat, lon, days<=7) -> daily rain, temp max/min, wind, ET0 [Open-Meteo forecast]
-get_mandi_prices(state, district?, commodity) -> market, min/max/modal price, arrival_date [data.gov.in]
-If no rows for district: widen to state, and always report the arrival_date actually returned.
-If still empty: return ok:false with reason "no data" (agent must say so, never guess)
-get_soil_profile(lat, lon) -> pH, organic carbon, sand/silt/clay [SoilGrids; cache 30 days; slow/rate-limited]
-(STRETCH) search_advisory_documents(query) -> passages + source URLs
-Agent loop
-streamText with tools, maxSteps ~6, temperature low.
-System prompt rules: (1) use tools for every factual number; (2) never invent prices/weather/soil values; (3) cite source + timestamp for each fact; (4) answer in the farmer's language; (5) if a tool fails, say what is missing and continue with what you have; (6) if crop or location is missing, ask ONE clarifying question; (7) no pesticide/chemical dosage — refer to the local KVK / agriculture officer; (8) end with 2-4 concrete dated actions.
-Every tool call and result is streamed to the UI trace panel and saved in advisories.tool_trace.
-Proactive alerts
-/api/alerts/run: for each farmer with telegram_chat_id, run the agent with an internal prompt ("Any weather or price risk in the next 48h for their crops? Reply ALERT: <msg> or OK"), send Telegram message only if ALERT. Triggered by a scheduled job (GitHub Actions cron or Vercel Cron) and by a demo button.
-Reliability
-Cache every API response in api_cache with fetched_at; serve cached data (clearly labelled with its age) if the live call fails.
-Timeouts (8s) + one retry with backoff on every external call. Handle Gemini rate limits with retry.
-Edge cases to test: unknown place, ambiguous place name, crop not in mandi data, API down, empty/garbled voice input, mixed-language input, off-topic question, very long question.
-Env vars (names only; values in .env.local and Vercel, NEVER committed)
+# Architecture
 
-GEMINI_API_KEY, DATA_GOV_IN_API_KEY, NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, TELEGRAM_BOT_TOKEN, CRON_SECRET
+## Frozen stack
+
+- Next.js App Router with TypeScript strict mode
+- Tailwind CSS and shadcn/ui
+- Vercel AI SDK: `ai` and `@ai-sdk/google`
+- Gemini Flash model selected from current Google AI Studio availability
+- Supabase Postgres
+- Telegram Bot API
+- Browser Web Speech API for recognition and speech synthesis
+- Vercel deployment and scheduled jobs
+
+Write a dated entry in `DECISIONS.md` before changing this stack or adding a dependency.
+
+## Repository layout
+
+```text
+app/
+  page.tsx                    main chat, voice, and profile experience
+  api/chat/route.ts           streaming agent endpoint
+  api/profile/route.ts        profile read and save
+  api/alerts/run/route.ts     alert check, cron, and demo trigger
+  api/telegram/route.ts       Telegram webhook
+components/                   chat, trace panel, profile form
+lib/
+  agent/agent.ts              agent prompt, loop, and tool wiring
+  agent/tools/                one file per external data tool
+  cache.ts                    Supabase cache read/write and TTL handling
+  supabase.ts                 server and browser clients
+  i18n.ts                     language definitions
+scripts/smoke/                live API smoke tests
+supabase/                     schema migrations
+docs/                         diagrams and supporting notes
+```
+
+## Data model
+
+```text
+farmers(
+  id uuid primary key,
+  device_id text unique,
+  language text,
+  lat float8,
+  lon float8,
+  place_name text,
+  state text,
+  district text,
+  crops text[],
+  telegram_chat_id text null,
+  created_at timestamptz
+)
+
+advisories(
+  id uuid primary key,
+  farmer_id uuid,
+  question text,
+  answer text,
+  tool_trace jsonb,
+  created_at timestamptz
+)
+
+api_cache(
+  key text primary key,
+  source text,
+  payload jsonb,
+  fetched_at timestamptz,
+  ttl_seconds int
+)
+
+alerts(
+  id uuid primary key,
+  farmer_id uuid,
+  kind text,
+  message text,
+  sent_at timestamptz,
+  delivered boolean
+)
+```
+
+No login is needed for the MVP. The browser creates and persists a `device_id`.
+
+## Tool contract
+
+Every tool returns either:
+
+```ts
+{ ok: true, data, source, fetched_at }
+{ ok: false, error, source, fetched_at }
+```
+
+Every external request uses an 8-second timeout, one retry with backoff, and `try/catch`.
+
+| Tool | Live source | Required behavior |
+| --- | --- | --- |
+| `geocode_location(query)` | Open-Meteo | Return latitude, longitude, state, and district. |
+| `get_weather_forecast(lat, lon, days)` | Open-Meteo | Support at most seven days; return rain, min/max temperature, wind, and ET0. |
+| `get_mandi_prices(state, district, commodity)` | data.gov.in | Try district first, then state; always return the actual arrival date. Return `no data` if empty. |
+| `get_soil_profile(lat, lon)` | SoilGrids | Return pH, organic carbon, sand, silt, and clay; cache for 30 days. |
+
+Cache real API responses with `fetched_at`. If a live call fails, cached data may be used only when its age is shown to the farmer.
+
+## Agent behavior
+
+The chat endpoint uses `streamText`, the tools above, low temperature, and at most six steps.
+
+The system prompt must:
+
+1. Call tools for factual claims.
+2. Never invent values, dates, prices, or sources.
+3. Answer in the selected farmer language.
+4. Ask one clarifying question when crop or location is missing.
+5. Continue with available data when a tool fails and clearly name the missing data.
+6. Avoid chemical dosage advice and refer users to a KVK or agriculture officer.
+7. End with two to four concrete, dated actions.
+
+Stream every tool call and result to the trace panel and save the trace in `advisories.tool_trace`.
+
+## Alerts
+
+`/api/alerts/run` loads farmers with a Telegram chat ID, checks the next 48 hours for weather or market risk, and sends a message only for an `ALERT` result. It runs through Vercel Cron and a protected demo trigger. The Telegram webhook links a chat ID to a farm profile.
+
+## Required environment variables
+
+```text
+GEMINI_API_KEY
+DATA_GOV_IN_API_KEY
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+TELEGRAM_BOT_TOKEN
+CRON_SECRET
+```
+
+Only names belong in the repository. Values belong in `.env.local` and Vercel.
