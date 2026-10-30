@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "smoke": "node --env-file-if-exists=.env.local scripts/smoke/live-apis.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
