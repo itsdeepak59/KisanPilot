@@ -1,20 +1,46 @@
-Handoff prompts (copy, fill the brackets)
-A. Coding agent WITH repo access (Codex CLI, Gemini CLI, Claude Code, Copilot agent)
+# Handoff prompts
 
-Read AGENTS.md, PROJECT.md, ARCHITECTURE.md, TASKS.md and DECISIONS.md. Your task is [T-number and title] from TASKS.md. Do only that task. Use real APIs only (no mock data). When done, run the typecheck/build, tell me how to test it, update TASKS.md notes, and suggest a commit message. If anything is unclear, ask before coding.
+With repository access, the agent instructions should be sufficient. Use these only when you need to start a new agent or ask an agent without access.
 
-B. Free web chat WITHOUT repo access (Claude/Gemini/ChatGPT in browser)
+## Start or resume a repository agent
 
-You are a senior developer on a 48-hour hackathon team. Context files are below; follow them strictly (no mock data, no new dependencies, do only the task). [paste PROJECT.md] [paste ARCHITECTURE.md] [paste the relevant part of TASKS.md and DECISIONS.md] Relevant existing code (only the files involved): [paste files] Task: [one specific task]. Output the complete changed files, with file paths, ready to paste. Do not change other files.
+```text
+Read AGENTS.md and follow it exactly. Read the required project files, inspect PROJECT_STATE.md, pull main, and check git status. Resume the active task if one exists; otherwise claim the first eligible task from TASKS.md. Work as the only active agent. Commit a checkpoint before your context ends. Do not start a second task.
+```
 
-C. Debugging prompt
+## Continue an interrupted task
 
-Here is the error: [full error text]. Here is the file(s): [code]. What I expected: [x]. What happens: [y]. Give the smallest fix, explain the cause in 2 lines, and tell me how to verify it. Do not rewrite unrelated code.
+```text
+You are taking over an existing KisanPilot task. Read AGENTS.md, PROJECT_STATE.md, TASKS.md, DECISIONS.md, and only the files named in the latest handoff. Resume the active task from the exact next step. Keep its status [~] until it is actually complete. Do not redo completed work or begin another task.
+```
 
-D. Status snapshot (ask the current agent before its limit ends, or after each task)
+## Ask an agent without repository access
 
-Summarize in 10 lines: what is finished, files changed, what is half-done, known bugs, and the exact next step. I will paste this into TASKS.md notes for the next agent.
+```text
+You are helping build KisanPilot, a voice-first multilingual agritech decision agent. Follow these rules: live API and real database data only; no mock, sample, placeholder, or invented values; no chemical dosage advice; TypeScript strict; every external call needs timeout, retry, try/catch, and typed result; do not add dependencies without a dated decision.
 
-E. Review prompt (use a different AI than the one that wrote the code)
+Task: [T# and title]
+Project state: [paste current PROJECT_STATE.md entry]
+Relevant architecture: [paste only relevant ARCHITECTURE.md section]
+Relevant code: [paste files]
 
-Review this code for: bugs, missing error handling, secrets exposed, any hardcoded or mock data, and anything that would break in a live demo. List issues by severity with the fix. Code: [paste]
+Return only the smallest changed files with paths, a short verification plan, and a conventional commit message. Do not alter unrelated files.
+```
+
+## Debug a real failure
+
+```text
+KisanPilot task: [T#]
+Expected behavior: [expected]
+Actual behavior: [actual]
+Full error: [paste]
+Relevant files: [paste]
+
+Find the smallest safe fix. State the cause in two sentences, return only changed files, and provide the exact verification step. Preserve live-data rules and do not rewrite unrelated code.
+```
+
+## Checkpoint before an agent limit
+
+```text
+Do not start new work. Update PROJECT_STATE.md and TASKS.md now with the exact files changed, commands and results, uncommitted changes, remaining work, blocker, and the next command. Commit this checkpoint using a conventional message, then stop.
+```
