@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T21 — Decision signals**
-- Next eligible task: none while T21 is active
+- Active task: **T22 — Official-advisory retrieval upgrade**
+- Next eligible task: none while T22 is active
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -592,3 +592,23 @@ Remaining work: Push this fix and confirm the new Vercel deployment succeeds, th
 Exact next step: Push commit and inspect the new Vercel status/deployment.
 Blocker: None.
 Commit: pending fix commit.
+
+### 2026-10-31 — T21 completion
+Status: [x] done
+Files changed: `lib/decision/signals.ts`, `lib/decision/service.ts`, `lib/agent/agent.ts`, `app/api/decisions/signals/route.ts`, `components/decision-signals.tsx`, `app/page.tsx`, `scripts/test/decision-signals.test.mjs`, `package.json`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Vercel status for fix commit `9366e69` succeeded. The `improve` branch Preview endpoint returned HTTP 200 with live weather/mandi sources and an explicit `insufficient_history` sell/hold result. A real Preview chat returned HTTP 200, invoked `get_decision_signals`, emitted a `done` event, and emitted no error event. Local decision tests, ESLint, strict TypeScript, production build, and diff check passed.
+Result: T21 is complete. The app exposes transparent harvest-weather, water-balance, and sell/hold heuristics through the agent and UI, with rules, inputs, sample size, and insufficient-data behavior.
+Remaining work: T22 — official-advisory retrieval upgrade.
+Exact next step: Claim T22, verify several official advisory pages live, then add allowlisted fetching, cleaning, chunking, and lexical topic ranking.
+Blocker: None.
+Commit: pending completion.
+
+### 2026-10-31 — T22 claim
+Status: [~] active
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: T21 Preview verification passed on the updated `improve` deployment.
+Result: T22 is the sole active task.
+Remaining work: Upgrade the single ICAR advisory source to several verified official sources with live URL validation, topic ranking, season-aware metadata, and chemical-dosage filtering.
+Exact next step: Search and live-verify official ICAR, IMD agromet, and state agriculture advisory pages before adding them to the allowlist.
+Blocker: None.
+Commit: pending claim.
