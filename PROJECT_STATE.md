@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **none**
-- Next eligible task: **T15 — Second regional language**
+- Active task: **T15 — Second regional language**
+- Next eligible task: none while T15 is active
 - Application status: T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
@@ -372,3 +372,13 @@ Remaining work: Select an official Indian agriculture source set, define retriev
 Exact next step: Confirm the official-source boundary before adding retrieval code or a new provider dependency.
 Blocker: The repository does not specify which official advisory sources or retrieval provider are approved; choosing one changes product scope and dependency surface.
 Commit: This claim commit.
+
+### 2026-10-31 — T15 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. T12 deployment and T14 official-advisory retrieval are complete.
+Result: T15 is the sole active task.
+Remaining work: Add Telugu as a complete profile, chat, voice, and UI language flow, then apply the database language constraint migration and verify a real Telugu chat.
+Exact next step: Update the shared language type and UI/agent mappings, then run checks before live verification.
+Blocker: None.
+Commit: pending
