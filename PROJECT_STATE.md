@@ -562,3 +562,13 @@ Remaining work: Add pure, transparent harvest-window, seven-day water-balance, a
 Exact next step: Inspect the existing weather and mandi-observation result shapes, then add pure decision functions and focused tests without adding a dependency.
 Blocker: None.
 Commit: pending claim.
+
+### 2026-10-31 — T21 implementation checkpoint
+Status: [~] active
+Files changed: `lib/decision/signals.ts`, `lib/decision/service.ts`, `lib/agent/agent.ts`, `app/api/decisions/signals/route.ts`, `components/decision-signals.tsx`, `app/page.tsx`, `scripts/test/decision-signals.test.ts`, `package.json`, `DECISIONS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: ESLint passed; strict TypeScript passed; production build passed and emitted `/api/decisions/signals`; `node --experimental-strip-types --test scripts/test/decision-signals.test.ts` passed all four tests. Live Preview verification is pending deployment.
+Result: Added pure harvest, water-balance, and sell/hold functions with visible rules, a typed live decision service, an agent tool, a UI card, and a profile-driven endpoint.
+Remaining work: Push the implementation, verify the endpoint and agent tool against live Preview data, then mark T21 complete.
+Exact next step: Push this checkpoint and run a real decision-signal request on the updated Preview deployment.
+Blocker: None.
+Commit: pending implementation checkpoint.

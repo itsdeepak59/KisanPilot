@@ -7,12 +7,14 @@ import { getWeatherForecast } from "@/lib/agent/tools/weather";
 import { getSoilProfile } from "@/lib/agent/tools/soil";
 import { getOfficialAdvisory } from "@/lib/agent/tools/advisory";
 import type { ConversationMessage } from "@/lib/conversation";
+import { getDecisionSignals } from "@/lib/decision/service";
 
 type GeocodeInput = { query: string };
 type WeatherInput = { latitude: number; longitude: number; days?: number };
 type MandiInput = { state: string; district: string; commodity: string };
 type SoilInput = { latitude: number; longitude: number };
 type AdvisoryInput = { topic: string };
+type DecisionInput = { latitude: number; longitude: number; state: string; district: string; commodity: string };
 
 const geocodeInput = jsonSchema<GeocodeInput>({
   type: "object",
@@ -60,6 +62,15 @@ const advisoryInput = jsonSchema<AdvisoryInput>({
   additionalProperties: false,
 });
 
+const decisionInput = jsonSchema<DecisionInput>({
+  type: "object",
+  properties: {
+    latitude: { type: "number" }, longitude: { type: "number" }, state: { type: "string" }, district: { type: "string" }, commodity: { type: "string" },
+  },
+  required: ["latitude", "longitude", "state", "district", "commodity"],
+  additionalProperties: false,
+});
+
 export const farmTools = {
   geocode_location: tool({
     description: "Find a real location and its administrative details using Open-Meteo.",
@@ -85,6 +96,11 @@ export const farmTools = {
     description: "Retrieve a live official ICAR farmer advisory page. Use it for advisory guidance and cite its returned URL and timestamp.",
     inputSchema: advisoryInput,
     execute: async ({ topic }: AdvisoryInput) => getOfficialAdvisory(topic),
+  }),
+  get_decision_signals: tool({
+    description: "Compute transparent harvest-weather, seven-day water-balance, and mandi sell/hold signals from live inputs. Show each returned rule and sample size; never present these heuristics as agronomic advice.",
+    inputSchema: decisionInput,
+    execute: async ({ latitude, longitude, state, district, commodity }: DecisionInput) => getDecisionSignals(latitude, longitude, state, district, commodity),
   }),
 };
 
