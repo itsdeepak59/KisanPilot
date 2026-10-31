@@ -20,7 +20,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T10 | [x] Error and edge-case hardening. | T6, T8, T9 | Known failure paths produce a clear, non-fabricated response. |
 | T11 | [x] Telegram webhook, alert run endpoint, and scheduled trigger. | T2, T6 | A linked real chat receives only an actual alert. |
 | T12 | [x] Deployed phone end-to-end rehearsal. | T7, T10, T11 | Live URL works on a phone; findings are logged. |
-| T13 | [~] Real price trend chart. Stretch. | T4, T12 | Chart uses retained real mandi observations only. |
+| T13 | [x] Real price trend chart. Stretch. | T4, T12 | Chart uses retained real mandi observations only. |
 | T14 | [ ] Official-advisory RAG. Stretch. | T12 | Answers cite official source URLs. |
 | T15 | [ ] Second regional language. Stretch. | T12 | One complete flow works in the new language. |
 | T16 | [ ] Submission README, architecture diagram, and 5–7 slide pitch deck. | T12 | Public repository documentation is complete. |
@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T13 is active. Add retained real mandi observations and a trend view without hardcoded chart data. T12 is complete.
+T13 is complete. Successful live mandi calls are retained and rendered by the trend API/chart; empty history remains explicit. T14 is the next eligible task.
 
 ## Required note format
 

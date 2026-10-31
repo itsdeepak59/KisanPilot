@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T13 — Real price trend chart**
-- Next eligible task: none while T13 is active
-- Application status: T13 is active. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: none
+- Next eligible task: **T14 — Official-advisory RAG**
+- Application status: T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -342,3 +342,13 @@ Remaining work: Apply `supabase/migrations/0002_mandi_observations.sql`, make a 
 Exact next step: Run the migration in Supabase SQL Editor, then tell me to continue T13 verification.
 Blocker: `public.mandi_observations` does not exist until the new migration is applied.
 Commit: Checkpoint commit.
+
+### 2026-10-31 — T13 completion
+Status: [x] done
+Files changed: `supabase/migrations/0002_mandi_observations.sql`, `lib/mandi-observations.ts`, `lib/agent/tools/mandi.ts`, `app/api/mandi/trend/route.ts`, `components/mandi-trend.tsx`, `app/page.tsx`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed. A real mandi chat returned HTTP 200 and invoked `get_mandi_prices`; the trend API returned `ok: true` with three retained live observations from data.gov.in.
+Result: T13 is complete. Chart data comes only from successful live mandi responses retained in Supabase; no-history and unavailable-history states are explicit.
+Remaining work: None for T13.
+Exact next step: Claim T14, then add official-advisory source retrieval with source URLs and timestamps.
+Blocker: None for T13.
+Commit: Completion commit.
