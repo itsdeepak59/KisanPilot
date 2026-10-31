@@ -22,9 +22,13 @@ export function getRequestIp(request: Request): string {
 }
 
 export function limitChatRequest(identifiers: string[], now = Date.now()): RateLimitResult {
+  return limitRequest(identifiers, CHAT_RATE_LIMIT, now);
+}
+
+export function limitRequest(identifiers: string[], limit: number, now = Date.now()): RateLimitResult {
   const keys = [...new Set(identifiers.filter(Boolean))];
   const activeByKey = keys.map((key) => ({ key, requests: activeRequests(entries.get(key) ?? { requests: [] }, now) }));
-  const blocked = activeByKey.find(({ requests }) => requests.length >= CHAT_RATE_LIMIT);
+  const blocked = activeByKey.find(({ requests }) => requests.length >= limit);
 
   if (blocked) {
     const oldestRequest = blocked.requests[0] ?? now;

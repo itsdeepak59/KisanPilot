@@ -13,6 +13,9 @@ export type FarmerProfile = {
   district: string | null;
   crops: string[];
   telegram_chat_id: string | null;
+  alert_rain_mm: number;
+  alert_wind_kmh: number;
+  alert_price_drop_pct: number | null;
   created_at: string;
 };
 
@@ -25,6 +28,9 @@ export type FarmerProfileInput = {
   state?: string | null;
   district?: string | null;
   crops?: string[];
+  alert_rain_mm?: number;
+  alert_wind_kmh?: number;
+  alert_price_drop_pct?: number | null;
 };
 
 export function isProfileLanguage(value: unknown): value is ProfileLanguage {
@@ -43,6 +49,10 @@ export function normalizeProfileInput(value: unknown): FarmerProfileInput | null
     : [];
 
   const numberOrNull = (candidate: unknown) => (typeof candidate === "number" && Number.isFinite(candidate) ? candidate : null);
+  const threshold = (candidate: unknown, fallback: number, maximum: number) => {
+    const value = numberOrNull(candidate);
+    return value !== null && value >= 0 && value <= maximum ? value : fallback;
+  };
   const stringOrNull = (candidate: unknown, maxLength: number) => {
     if (candidate === null || candidate === undefined) return null;
     if (typeof candidate !== "string") return null;
@@ -59,5 +69,8 @@ export function normalizeProfileInput(value: unknown): FarmerProfileInput | null
     state: stringOrNull(input.state, 120),
     district: stringOrNull(input.district, 120),
     crops,
+    alert_rain_mm: threshold(input.alert_rain_mm, 20, 500),
+    alert_wind_kmh: threshold(input.alert_wind_kmh, 40, 300),
+    alert_price_drop_pct: threshold(input.alert_price_drop_pct, 0, 100) || null,
   };
 }

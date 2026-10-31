@@ -3,11 +3,9 @@ import { geocodeLocation } from "@/lib/agent/tools/geocode";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { sendTelegramMessage } from "@/lib/telegram";
 import { withDatabaseRetry } from "@/lib/db";
+import { findWeatherRisk } from "@/lib/alerts/evaluate";
 
-const RAIN_ALERT_MM = 20;
-const WIND_ALERT_KMH = 40;
-
-type FarmerAlertRow = { id: string; lat: number | null; lon: number | null; place_name: string | null; telegram_chat_id: string | null };
+type FarmerAlertRow = { id: string; lat: number | null; lon: number | null; place_name: string | null; telegram_chat_id: string | null; alert_rain_mm: number; alert_wind_kmh: number };
 
 function isAuthorized(request: Request): boolean {
   const secret = process.env.CRON_SECRET;
@@ -28,7 +26,7 @@ async function runAlerts(request: Request) {
   if (!process.env.TELEGRAM_BOT_TOKEN) return Response.json({ ok: false, error: "TELEGRAM_BOT_TOKEN is not configured" }, { status: 503 });
 
   try {
-    const { data: farmers, error } = await withDatabaseRetry(() => createServerSupabaseClient().from("farmers").select("id,lat,lon,place_name,telegram_chat_id").not("telegram_chat_id", "is", null).limit(100));
+    const { data: farmers, error } = await withDatabaseRetry(() => createServerSupabaseClient().from("farmers").select("id,lat,lon,place_name,telegram_chat_id,alert_rain_mm,alert_wind_kmh").not("telegram_chat_id", "is", null).limit(100));
     if (error) throw error;
     const results: Array<{ farmer_id: string; sent: boolean; reason?: string }> = [];
     for (const farmer of (farmers ?? []) as FarmerAlertRow[]) {
@@ -54,12 +52,12 @@ async function runAlerts(request: Request) {
         results.push({ farmer_id: farmer.id, sent: false, reason: "Weather unavailable" });
         continue;
       }
-      const risk = weather.data.days.find((day) => (day.rain_mm ?? 0) >= RAIN_ALERT_MM || (day.max_wind_kmh ?? 0) >= WIND_ALERT_KMH);
+      const risk = findWeatherRisk(weather.data.days, { rain_mm: farmer.alert_rain_mm ?? 20, wind_kmh: farmer.alert_wind_kmh ?? 40 });
       if (!risk) {
         results.push({ farmer_id: farmer.id, sent: false, reason: "No alert threshold reached" });
         continue;
       }
-      const detail = (risk.rain_mm ?? 0) >= RAIN_ALERT_MM ? `rain ${risk.rain_mm} mm` : `wind ${risk.max_wind_kmh} km/h`;
+      const detail = risk.detail;
       const cacheNote = weather.cached ? ` Cached data is ${weather.cache_age_seconds ?? 0} seconds old.` : "";
       const message = `KisanPilot weather alert for ${risk.date}: ${detail}. Source: ${weather.source}, fetched ${weather.fetched_at}.${cacheNote}`;
       const sent = await sendTelegramMessage(farmer.telegram_chat_id, message);

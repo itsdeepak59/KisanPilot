@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import type { FarmerProfile, ProfileLanguage } from "@/lib/profile";
 import { MandiTrend } from "@/components/mandi-trend";
 import { DecisionSignals } from "@/components/decision-signals";
+import { AlertCheck } from "@/components/alert-check";
 import { MAX_CONVERSATION_MESSAGES, type ConversationMessage } from "@/lib/conversation";
 
 const DEVICE_ID_KEY = "kisanpilot.device_id";
@@ -23,6 +24,8 @@ function profileToForm(profile: FarmerProfile | null) {
     state: profile?.state ?? "",
     district: profile?.district ?? "",
     crops: profile?.crops.join(", ") ?? "",
+    alert_rain_mm: String(profile?.alert_rain_mm ?? 20),
+    alert_wind_kmh: String(profile?.alert_wind_kmh ?? 40),
   };
 }
 
@@ -114,6 +117,8 @@ export default function Home() {
           state: form.state,
           district: form.district,
           crops: form.crops.split(",").map((crop) => crop.trim()).filter(Boolean),
+          alert_rain_mm: Number(form.alert_rain_mm),
+          alert_wind_kmh: Number(form.alert_wind_kmh),
         }),
       });
       const result = (await response.json()) as { ok: boolean; data?: FarmerProfile; error?: string };
@@ -279,6 +284,7 @@ export default function Home() {
               <label className="block text-sm font-medium">Language<select className="mt-2 w-full rounded-xl border border-[#d5dfd2] bg-white px-4 py-3 outline-none focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" value={form.language} onChange={(event) => setForm({ ...form, language: event.target.value as ProfileLanguage })}><option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option></select></label>
               <div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-medium">Village or town<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter your location" value={form.place_name} onChange={(event) => setForm({ ...form, place_name: event.target.value })} /></label><label className="block text-sm font-medium">District<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter district" value={form.district} onChange={(event) => setForm({ ...form, district: event.target.value })} /></label></div>
               <div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-medium">State<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter state" value={form.state} onChange={(event) => setForm({ ...form, state: event.target.value })} /></label><label className="block text-sm font-medium">Crops<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Comma-separated crops" value={form.crops} onChange={(event) => setForm({ ...form, crops: event.target.value })} /></label></div>
+              <div className="rounded-2xl bg-[#f5f7f2] p-4"><p className="text-sm font-semibold text-[#285d3d]">Alert thresholds</p><p className="mt-1 text-xs text-[#58705c]">A Telegram alert is sent only when the live two-day forecast crosses your thresholds.</p><div className="mt-3 grid gap-4 sm:grid-cols-2"><label className="block text-sm font-medium">Rain threshold (mm)<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] bg-white px-4 py-3" min="0" max="500" step="0.1" type="number" value={form.alert_rain_mm} onChange={(event) => setForm({ ...form, alert_rain_mm: event.target.value })} /></label><label className="block text-sm font-medium">Wind threshold (km/h)<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] bg-white px-4 py-3" min="0" max="300" step="0.1" type="number" value={form.alert_wind_kmh} onChange={(event) => setForm({ ...form, alert_wind_kmh: event.target.value })} /></label></div></div>
               <div className="flex flex-wrap items-center gap-3"><button className="rounded-xl bg-[#285d3d] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1e4b30] disabled:cursor-not-allowed disabled:opacity-60" disabled={saving || loading} type="submit">{saving ? "Saving…" : "Save profile"}</button>{savedMessage && <p className="text-sm text-[#58705c]" role="status">{savedMessage}</p>}</div>
             </form>
           </div>
@@ -287,6 +293,7 @@ export default function Home() {
           {trace.length > 0 && <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8"><div className="flex items-center justify-between gap-4"><div><p className="text-sm font-medium text-[#65806c]">Transparency</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Tool trace</h2></div><span className="rounded-full bg-[#edf4e7] px-3 py-1 text-xs font-medium text-[#476c4f]">{trace.length} events</span></div><div className="mt-6 space-y-3">{trace.map((event, index) => { const result = event.result && typeof event.result === "object" ? event.result as Record<string, unknown> : null; const source = typeof result?.source === "string" ? result.source : "Source returned by tool"; const fetchedAt = typeof result?.fetched_at === "string" ? result.fetched_at : event.fetched_at; return <div className="rounded-2xl border border-[#e4ebe1] p-4" key={`${event.type}-${index}`}><div className="flex flex-wrap items-center justify-between gap-2"><p className="font-medium">{event.tool ?? "Tool"}</p><span className="text-xs font-medium uppercase tracking-wide text-[#65806c]">{event.type === "tool_call" ? "Requested" : "Result"}</span></div>{event.type === "tool_call" ? <p className="mt-2 break-words text-sm text-[#58705c]">Input: {formatTraceValue(event.input)}</p> : <><p className="mt-2 break-words text-sm text-[#58705c]">Source: {source}</p><p className="mt-1 text-xs text-[#819083]">Fetched: {fetchedAt ? new Date(fetchedAt).toLocaleString() : "Unavailable"}{result?.cached === true && ` · Cached${typeof result.cache_age_seconds === "number" ? ` · ${result.cache_age_seconds}s old` : ""}`}</p><p className="mt-2 break-words text-sm text-[#334c39]">{formatTraceValue(result?.data ?? result?.error ?? result)}</p></>}</div>; })}</div></div>}
           {profile && <MandiTrend state={form.state} district={form.district} commodity={form.crops.split(",")[0]?.trim() ?? ""} />}
           {profile && <DecisionSignals place={form.place_name} state={form.state} district={form.district} commodity={form.crops.split(",")[0]?.trim() ?? ""} />}
+          {profile && deviceIdLabel && <AlertCheck deviceId={deviceIdLabel} rainThreshold={profile.alert_rain_mm ?? 20} windThreshold={profile.alert_wind_kmh ?? 40} />}
         </section>
       </div>
     </main>

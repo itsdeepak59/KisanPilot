@@ -642,3 +642,13 @@ Remaining work: Add farmer alert thresholds, a protected device-scoped check end
 Exact next step: Inspect the existing alert route/schema/profile UI, then add the migration and shared alert evaluation service.
 Blocker: The new Supabase migration will require the human to apply SQL before final live verification.
 Commit: pending claim.
+
+### 2026-10-31 — T23 implementation checkpoint
+Status: [~] active
+Files changed: `supabase/migrations/0004_alert_thresholds.sql`, `lib/profile.ts`, `lib/alerts/evaluate.ts`, `lib/rate-limit.ts`, `app/api/alerts/run/route.ts`, `app/api/alerts/check/route.ts`, `app/api/alerts/history/route.ts`, `components/alert-check.tsx`, `app/page.tsx`, and `PROJECT_STATE.md`.
+Checks and real calls: ESLint passed; strict TypeScript passed; production build passed and emitted `/api/alerts/check` and `/api/alerts/history`; diff check passed. Live Supabase verification is blocked until migration `0004_alert_thresholds.sql` is applied.
+Result: Added configurable per-farmer rain/wind thresholds, a rate-limited device-scoped live alert check, Telegram delivery only on a real breach, alert history, and profile UI controls. The cron route now uses each farmer's thresholds.
+Remaining work: Apply migration `0004_alert_thresholds.sql`, then verify profile save/load, below-threshold comparison, history, and a real breach/delivery path when available.
+Exact next step: Run the migration in Supabase SQL Editor, then tell me to continue T23 verification.
+Blocker: `public.farmers` lacks the three new threshold columns until the human applies migration `0004_alert_thresholds.sql`.
+Commit: pending implementation checkpoint.
