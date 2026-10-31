@@ -4,9 +4,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 
 ## Current state
 
-- Branch: `main`
-- Active task: **None.** T18 is human-only and blocked on a human recording; agents must not claim it.
-- Next eligible task: **T19 — Public endpoint hardening (Phase 2, branch `improve`)**
+- Branch: `improve`
+- Active task: **T19 — Public endpoint hardening (Phase 2).**
+- Next eligible task: T20 — Conversation memory, after T19 is complete.
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -482,3 +482,13 @@ Remaining work: T19 through T26, then feature freeze, then the human completes T
 Exact next step: Read `AGENTS.md`, switch to branch `improve`, claim T19, and commit the claim on `improve`.
 Blocker: Human must create the `v1-stable` tag and `improve` branch, and enable Preview environment variables in Vercel (see PHASE2_RUNBOOK.md).
 Commit: pending.
+
+### 2026-10-31 — T19 claim
+Status: [~] active
+Files changed: `PROJECT_STATE.md`, `TASKS.md`.
+Checks and real calls: Confirmed clean `improve` checkout tracking `origin/improve`; `git fetch origin` and `git pull --ff-only origin improve` reported up to date.
+Result: T19 is the sole active task.
+Remaining work: Add bounded chat rate limiting, an explicit streaming duration, Telegram webhook-secret verification, configuration documentation, and preview verification.
+Exact next step: Inspect the chat and Telegram routes and existing request/profile helpers before implementing the hardening controls.
+Blocker: Preview environment variables and deployment URL availability are not yet verified.
+Commit: pending claim commit.
