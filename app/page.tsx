@@ -41,6 +41,22 @@ function formatTraceValue(value: unknown): string {
   }
 }
 
+type SpeechRecognitionLike = {
+  lang: string;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+type SpeechWindow = Window & {
+  SpeechRecognition?: new () => SpeechRecognitionLike;
+  webkitSpeechRecognition?: new () => SpeechRecognitionLike;
+};
+
 export default function Home() {
   const deviceId = useRef("");
   const [profile, setProfile] = useState<FarmerProfile | null>(null);
@@ -51,6 +67,10 @@ export default function Home() {
   const [answer, setAnswer] = useState("");
   const [trace, setTrace] = useState<TraceEvent[]>([]);
   const [asking, setAsking] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [voiceMessage, setVoiceMessage] = useState("");
+  const recognition = useRef<SpeechRecognitionLike | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -96,6 +116,58 @@ export default function Home() {
     } finally {
       setSaving(false);
     }
+  }
+
+  function startVoiceInput() {
+    const speechWindow = window as SpeechWindow;
+    const Recognition = speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
+    if (!Recognition) {
+      setVoiceMessage("Voice input is not available in this browser. You can type your question instead.");
+      return;
+    }
+    recognition.current?.stop();
+    const current = new Recognition();
+    current.lang = form.language === "hi" ? "hi-IN" : "en-IN";
+    current.interimResults = false;
+    current.maxAlternatives = 1;
+    current.onresult = (event) => {
+      const transcript = event.results[0]?.[0]?.transcript?.trim();
+      if (transcript) setQuestion((existing) => `${existing} ${transcript}`.trim());
+      setVoiceMessage("Voice question captured. Review it before submitting.");
+    };
+    current.onerror = () => setVoiceMessage("Voice input was unavailable. You can type your question instead.");
+    current.onend = () => setListening(false);
+    recognition.current = current;
+    setVoiceMessage("Listening…");
+    setListening(true);
+    try {
+      current.start();
+    } catch {
+      setListening(false);
+      setVoiceMessage("Voice input could not start. You can type your question instead.");
+    }
+  }
+
+  function speakAnswer() {
+    if (!answer) {
+      setVoiceMessage("Submit a question and wait for an answer before using spoken playback.");
+      return;
+    }
+    if (!("speechSynthesis" in window)) {
+      setVoiceMessage("Spoken playback is not available in this browser. The written answer is available above.");
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(answer);
+    utterance.lang = form.language === "hi" ? "hi-IN" : "en-IN";
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => {
+      setSpeaking(false);
+      setVoiceMessage("Spoken playback was unavailable. The written answer is available above.");
+    };
+    setSpeaking(true);
+    setVoiceMessage("Speaking the answer…");
+    window.speechSynthesis.speak(utterance);
   }
 
   async function submitQuestion(event: FormEvent<HTMLFormElement>) {
@@ -175,7 +247,7 @@ export default function Home() {
             </form>
           </div>
 
-          <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8"><p className="text-sm font-medium text-[#65806c]">Ask KisanPilot</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">What do you want to decide?</h2><form className="mt-6" onSubmit={submitQuestion}><textarea className="min-h-32 w-full resize-y rounded-2xl border border-[#d5dfd2] px-4 py-4 leading-6 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Type a question about your crop or farm…" value={question} onChange={(event) => setQuestion(event.target.value)} /><div className="mt-4 flex flex-wrap items-center gap-3"><button className="rounded-xl bg-[#173b2b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#102b1e] disabled:cursor-wait disabled:opacity-60" disabled={asking} type="submit">{asking ? "Checking live sources…" : "Submit question"}</button>{questionMessage && <p className="max-w-md text-sm text-[#58705c]" role="status">{questionMessage}</p>}</div></form>{answer && <div className="mt-7 rounded-2xl bg-[#f5f7f2] p-5"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#65806c]">Live answer</p><p className="mt-3 whitespace-pre-wrap leading-7 text-[#26382b]">{answer}</p></div>}</div>
+          <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8"><p className="text-sm font-medium text-[#65806c]">Ask KisanPilot</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">What do you want to decide?</h2><form className="mt-6" onSubmit={submitQuestion}><textarea className="min-h-32 w-full resize-y rounded-2xl border border-[#d5dfd2] px-4 py-4 leading-6 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Type a question about your crop or farm…" value={question} onChange={(event) => setQuestion(event.target.value)} /><div className="mt-4 flex flex-wrap items-center gap-3"><button className="rounded-xl border border-[#285d3d] px-4 py-3 text-sm font-semibold text-[#285d3d] transition hover:bg-[#edf4e7]" onClick={startVoiceInput} type="button">{listening ? "Listening…" : "Use voice"}</button><button className="rounded-xl bg-[#173b2b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#102b1e] disabled:cursor-wait disabled:opacity-60" disabled={asking} type="submit">{asking ? "Checking live sources…" : "Submit question"}</button>{questionMessage && <p className="max-w-md text-sm text-[#58705c]" role="status">{questionMessage}</p>}</div>{voiceMessage && <p className="mt-3 text-sm text-[#58705c]" role="status">{voiceMessage}</p>}</form>{answer && <div className="mt-7 rounded-2xl bg-[#f5f7f2] p-5"><div className="flex flex-wrap items-center justify-between gap-3"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#65806c]">Live answer</p><button className="rounded-lg border border-[#b9ccb8] px-3 py-2 text-xs font-semibold text-[#285d3d] hover:bg-white" onClick={speakAnswer} type="button">{speaking ? "Speaking…" : "Read answer aloud"}</button></div><p className="mt-3 whitespace-pre-wrap leading-7 text-[#26382b]">{answer}</p></div>}</div>
           {trace.length > 0 && <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8"><div className="flex items-center justify-between gap-4"><div><p className="text-sm font-medium text-[#65806c]">Transparency</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Tool trace</h2></div><span className="rounded-full bg-[#edf4e7] px-3 py-1 text-xs font-medium text-[#476c4f]">{trace.length} events</span></div><div className="mt-6 space-y-3">{trace.map((event, index) => { const result = event.result && typeof event.result === "object" ? event.result as Record<string, unknown> : null; const source = typeof result?.source === "string" ? result.source : "Source returned by tool"; const fetchedAt = typeof result?.fetched_at === "string" ? result.fetched_at : event.fetched_at; return <div className="rounded-2xl border border-[#e4ebe1] p-4" key={`${event.type}-${index}`}><div className="flex flex-wrap items-center justify-between gap-2"><p className="font-medium">{event.tool ?? "Tool"}</p><span className="text-xs font-medium uppercase tracking-wide text-[#65806c]">{event.type === "tool_call" ? "Requested" : "Result"}</span></div>{event.type === "tool_call" ? <p className="mt-2 break-words text-sm text-[#58705c]">Input: {formatTraceValue(event.input)}</p> : <><p className="mt-2 break-words text-sm text-[#58705c]">Source: {source}</p><p className="mt-1 text-xs text-[#819083]">Fetched: {fetchedAt ? new Date(fetchedAt).toLocaleString() : "Unavailable"}{result?.cached === true && ` · Cached${typeof result.cache_age_seconds === "number" ? ` · ${result.cache_age_seconds}s old` : ""}`}</p><p className="mt-2 break-words text-sm text-[#334c39]">{formatTraceValue(result?.data ?? result?.error ?? result)}</p></>}</div>; })}</div></div>}
         </section>
       </div>
