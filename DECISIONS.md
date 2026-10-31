@@ -4,6 +4,7 @@ Do not reverse or materially change a decision without adding a dated entry with
 
 ## Locked decisions
 
+- **D8 — 2026-10-31:** Use `@supabase/supabase-js` directly for the MVP's browser and server clients. The browser client uses the public URL and anon key for future client-safe reads; profile API routes use a separately constructed service-role client for controlled persistence. No auth is introduced, so the API validates the browser `device_id` and only upserts or reads that profile.
 - **D1 — 2026-10-30:** Build Theme 2 agritech as a tool-calling decision agent. Live public data supports the required agent behavior and a reliable demo.
 - **D2 — 2026-10-30:** Exclude browser agents for government portals, emergency logistics swarms, and hardware grid control. These paths depend on fragile or unavailable data sources.
 - **D3 — 2026-10-30:** Use TypeScript and Next.js for both UI and agent work. No separate Python service.

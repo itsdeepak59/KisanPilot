@@ -5,10 +5,10 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T2 — Supabase schema, clients, and farm-profile persistence**
-- Next eligible task: none while T2 is active
-- Application status: T2 is active. Implementing the schema, Supabase clients, and profile persistence by device ID; live save/load verification awaits project credentials.
-- Last documentation update: 2026-10-30
+- Active task: none
+- Next eligible task: **T3 — Geocode and weather tools with typed responses and real-response caching**
+- Application status: T2 is complete. The schema, Supabase clients, and profile persistence by device ID build successfully; live save/load verification awaits project credentials.
+- Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
 ## Start protocol for the next agent
@@ -82,3 +82,13 @@ Remaining work: Add the schema migration, server/browser clients, and profile sa
 Exact next step: Record the Supabase client integration decision, then implement the migration and persistence path.
 Blocker: The local `.env.local` has no nonempty Supabase URL, anon key, or service-role key, so live save/load validation is pending.
 Commit: This claim commit.
+
+### 2026-10-31 — T2 completion
+Status: [x] done
+Files changed: `DECISIONS.md`, `package.json`, `package-lock.json`, `app/layout.tsx`, `app/api/profile/route.ts`, `lib/profile.ts`, `lib/supabase.ts`, `supabase/migrations/0001_initial_schema.sql`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint entry point passed; direct strict TypeScript check passed; direct Next production build passed and emitted `/api/profile`. No Supabase save/load call was run because the required URL, anon key, and service-role key are absent from `.env.local`.
+Result: Added the initial Supabase schema, browser/server client factories, typed profile normalization, and GET/POST profile persistence by `device_id`. Database requests use an eight-second timeout, one retry with backoff, and source/timestamp result envelopes. Removed the scaffold's Google-hosted font fetch and invalid route runtime declaration so offline production builds complete with the repository's cache-components setting.
+Remaining work: Real profile save/load verification after Supabase credentials are provided. No fabricated profile data was added.
+Exact next step: Claim T3, then implement the Open-Meteo geocode and weather tools with typed live responses and real-response caching.
+Blocker: Supabase credentials are absent for live persistence validation.
+Commit: Pending completion commit.
