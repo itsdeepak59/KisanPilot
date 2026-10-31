@@ -5,11 +5,11 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T17 — Final production readiness review**
-- Next eligible task: **T17 — Final production readiness review (active)**
+- Active task: **none**
+- Next eligible task: **T18 — Record real demo and submit**
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
-- Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
+- Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
 
 ## Start protocol for the next agent
 
@@ -442,3 +442,13 @@ Remaining work: Run `npm run smoke` with local Gemini and data.gov.in credential
 Exact next step: Restore the seven required values in `.env.local` without committing them, then rerun the T17 credentialed checks.
 Blocker: This workspace has no nonempty values for `GEMINI_API_KEY`, `DATA_GOV_IN_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `TELEGRAM_BOT_TOKEN`, or `CRON_SECRET`.
 Commit: pending recheck commit.
+
+### 2026-10-31 — T17 completion
+Status: [x] done
+Files changed: `DECISIONS.md`, `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: All seven required local variables are configured without exposing values. `npm run smoke` passed Open-Meteo geocoding and forecast, data.gov.in mandi, and Gemini function-calling checks. SoilGrids returned HTML rather than JSON and was reported as unavailable. Direct ESLint, strict TypeScript, and production build passed. Production homepage and profile routes returned 200; unauthenticated alerts returned 401; English and Hindi chats returned 200 with `tool_call`, `tool_result`, `text_delta`, and `done`; ignored Telegram webhook input returned 200. The protected production alert route returned 200, evaluated two linked farmers, and sent zero messages because neither met the real weather threshold.
+Result: Secrets remain untracked, required environment names are present locally and in production behavior, the live advisory flow and source trace work, and protected alert access works. No alert was fabricated.
+Remaining work: T18 — record a real demo and submit it.
+Exact next step: Claim T18, record the live profile, Hindi voice-or-text advisory, trace, and alert-check flow, then submit the video.
+Blocker: SoilGrids may be unavailable during the recording; show the explicit unavailable state rather than claiming a soil fact if it persists.
+Commit: pending completion commit.

@@ -84,3 +84,9 @@ The smoke script is `scripts/smoke/live-apis.mjs`. It enforces an eight-second t
 - Implementation: SoilGrids values are typed, pH and texture values are normalized to documented display units, successful responses are cached for 30 days, and cached responses are visibly marked with age.
 - Impact: T8 is complete in code and integration; fresh SoilGrids availability remains an external service risk and must be rechecked before demo claims about soil facts.
 
+### 2026-10-31 08:52 UTC — Final readiness SoilGrids check
+
+- Operation: `npm run smoke` against the configured production credentials.
+- Result: Open-Meteo geocoding and forecast, data.gov.in mandi, and Gemini function-calling passed. SoilGrids returned HTML instead of JSON, so the smoke check reported it as unavailable.
+- Impact: Do not claim a fresh soil result in the demo unless the live call succeeds. The application must continue to show the source as unavailable or a visibly aged cached result; it must not synthesize soil values.
+

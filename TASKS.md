@@ -24,12 +24,12 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T14 | [x] Official-advisory RAG. Stretch. | T12 | Answers cite official source URLs. |
 | T15 | [x] Second regional language. Stretch. | T12 | One complete flow works in the new language. |
 | T16 | [x] Submission README, architecture diagram, and 5–7 slide pitch deck. | T12 | Public repository documentation is complete. |
-| T17 | [~] Final production readiness review. | T16 | Secrets, environment, and all demo paths are checked. |
+| T17 | [x] Final production readiness review. | T16 | Secrets, environment, and all demo paths are checked. |
 | T18 | [ ] Record real demo and submit. | T17 | Video shows the live product and tool trace. |
 
 ## Current task notes
 
-T17 is active. Production public routes and chat streaming passed, but local credentialed smoke and authorized alert checks remain pending because `.env.local` has none of the seven required values.
+T17 is complete. Local credentials, secret hygiene, production routes, streaming tool traces, credentialed live smoke checks, and the authorized alert path have been reviewed. T18 is the next eligible task.
 
 ## Required note format
 
