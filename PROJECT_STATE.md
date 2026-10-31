@@ -612,3 +612,13 @@ Remaining work: Upgrade the single ICAR advisory source to several verified offi
 Exact next step: Search and live-verify official ICAR, IMD agromet, and state agriculture advisory pages before adding them to the allowlist.
 Blocker: None.
 Commit: pending claim.
+
+### 2026-10-31 — T22 implementation checkpoint
+Status: [~] active
+Files changed: `lib/agent/tools/advisory.ts`, `lib/agent/agent.ts`, `DECISIONS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Live source verification found readable official pages at ICAR Kharif, ICAR Rabi, and IMD Crop Specific Advisory. ESLint passed; strict TypeScript passed; production build passed; diff check passed.
+Result: The advisory tool now fetches all approved sources with the existing timeout/retry contract, removes unsafe HTML and chemical-treatment sentences, ranks topic/season matches, and returns at most three URL/timestamp-stamped matches.
+Remaining work: Push this checkpoint and verify topic-changing advisory responses and the source list on Preview.
+Exact next step: Push the implementation, wait for Vercel success, then run two real advisory chats with different topics.
+Blocker: None.
+Commit: pending implementation checkpoint.
