@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T8 — Soil tool and agent integration**
-- Next eligible task: none while T8 is active
-- Application status: T8 is active. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: none
+- Next eligible task: **T9 — Voice input and spoken response**
+- Application status: T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -212,3 +212,13 @@ Remaining work: Add typed SoilGrids pH, organic carbon, sand, silt, and clay dat
 Exact next step: Inspect one live SoilGrids response shape, then implement the parser and tool declaration.
 Blocker: None currently.
 Commit: This claim commit.
+
+### 2026-10-31 — T8 completion
+Status: [x] done
+Files changed: `lib/agent/tools/soil.ts`, `lib/agent/agent.ts`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed. A real Gemini-backed soil question returned HTTP 200, emitted a `get_soil_profile` tool trace, surfaced the SoilGrids source, and explicitly reported provider unavailability; no soil values were fabricated.
+Result: Added typed SoilGrids pH, organic carbon, sand, silt, and clay parsing at 0-5cm, 30-day Supabase caching, cache-age fallback metadata, and agent tool integration.
+Remaining work: None for T8 implementation. Fresh SoilGrids availability should be rechecked before making soil-specific demo claims.
+Exact next step: Claim T9, then add browser speech recognition with typed input fallback and optional spoken response.
+Blocker: SoilGrids returned HTTP 503 during this run; the unavailable path is transparent and safe.
+Commit: Completion commit.

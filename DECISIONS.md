@@ -73,3 +73,10 @@ The smoke script is `scripts/smoke/live-apis.mjs`. It enforces an eight-second t
 - Finding: the API returned zero records when state and commodity filters were combined, even though the state-only response contained 298 records and 45 Maize records. The tool therefore queries district plus commodity first; on fallback it queries the state and filters the live records by commodity in typed code.
 - Impact: T4 is not blocked. No-data remains explicit when neither live query nor timestamped cache has records.
 
+### 2026-10-31 — SoilGrids tool integration
+
+- Endpoint: `https://rest.isric.org/soilgrids/v2.0/properties/query` with `phh2o`, `soc`, `sand`, `silt`, and `clay` at `0-5cm`.
+- Result: the provider returned HTTP 503 during the T8 live parser check and the real agent soil question. The agent returned HTTP 200 and surfaced the SoilGrids source and unavailable state without inventing soil values.
+- Implementation: SoilGrids values are typed, pH and texture values are normalized to documented display units, successful responses are cached for 30 days, and cached responses are visibly marked with age.
+- Impact: T8 is complete in code and integration; fresh SoilGrids availability remains an external service risk and must be rechecked before demo claims about soil facts.
+

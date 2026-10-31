@@ -15,7 +15,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T5 | [x] Core chat and profile UI with language selection and typed input. | T0, T2 | Profile persists and a farmer can submit a question. |
 | T6 | [x] Streaming agent route and tool trace protocol. | T3, T4, T5 | Agent calls tools and streams a source-stamped trace. |
 | T7 | [x] Trace panel. | T6 | Each call shows arguments, result state, source, timestamp, and cache age. |
-| T8 | [~] Soil tool and agent integration. | T1, T2, T6 | Soil facts use live or clearly labelled cached SoilGrids data. |
+| T8 | [x] Soil tool and agent integration. | T1, T2, T6 | Soil facts use live or clearly labelled cached SoilGrids data. |
 | T9 | [ ] Voice input and spoken response. | T5, T6 | Speech recognition has a typed fallback; answer speech is optional and safe. |
 | T10 | [ ] Error and edge-case hardening. | T6, T8, T9 | Known failure paths produce a clear, non-fabricated response. |
 | T11 | [ ] Telegram webhook, alert run endpoint, and scheduled trigger. | T2, T6 | A linked real chat receives only an actual alert. |
@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T8 is active. Implement the SoilGrids profile tool with 30-day caching and expose it to the streaming agent. T7 is complete.
+T8 is complete. The SoilGrids tool is typed, cached for 30 days, and exposed to the agent; current provider 503 responses are surfaced transparently. T9 is the next eligible task.
 
 ## Required note format
 
