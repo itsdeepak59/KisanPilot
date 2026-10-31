@@ -10,8 +10,10 @@
     "smoke": "node --env-file-if-exists=.env.local scripts/smoke/live-apis.mjs"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.109",
     "@base-ui/react": "^1.9.0",
     "@supabase/supabase-js": "^2.118.0",
+    "ai": "^7.0.159",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.1",
     "next": "16.4.3",

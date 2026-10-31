@@ -13,7 +13,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T3 | [x] Geocode and weather tools with typed responses and real-response caching. | T1, T2 | Real location and forecast calls work; cache behavior is visible. |
 | T4 | [x] Mandi tool with district-to-state fallback and no-data behavior. | T1, T2 | Real query returns source and arrival date, or a typed no-data result. |
 | T5 | [x] Core chat and profile UI with language selection and typed input. | T0, T2 | Profile persists and a farmer can submit a question. |
-| T6 | [~] Streaming agent route and tool trace protocol. | T3, T4, T5 | Agent calls tools and streams a source-stamped trace. |
+| T6 | [x] Streaming agent route and tool trace protocol. | T3, T4, T5 | Agent calls tools and streams a source-stamped trace. |
 | T7 | [ ] Trace panel. | T6 | Each call shows arguments, result state, source, timestamp, and cache age. |
 | T8 | [ ] Soil tool and agent integration. | T1, T2, T6 | Soil facts use live or clearly labelled cached SoilGrids data. |
 | T9 | [ ] Voice input and spoken response. | T5, T6 | Speech recognition has a typed fallback; answer speech is optional and safe. |
@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T6 is active. Implement the streaming Gemini agent route with live tool calls and source-stamped trace events. T5 is complete.
+T6 is complete. The Gemini agent route streams text and source-stamped tool events, and persists completed advisories with their trace. T7 is the next eligible task.
 
 ## Required note format
 

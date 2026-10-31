@@ -4,6 +4,7 @@ Do not reverse or materially change a decision without adding a dated entry with
 
 ## Locked decisions
 
+- **D9 — 2026-10-31:** Add `ai` and `@ai-sdk/google` for the T6 streaming agent route, using the existing `GEMINI_API_KEY` server-side only. The route will expose only the repository's live data tools, cap the agent at six steps, and emit a typed trace for tool calls/results.
 - **D8 — 2026-10-31:** Use `@supabase/supabase-js` directly for the MVP's browser and server clients. The browser client uses the public URL and anon key for future client-safe reads; profile API routes use a separately constructed service-role client for controlled persistence. No auth is introduced, so the API validates the browser `device_id` and only upserts or reads that profile.
 - **D1 — 2026-10-30:** Build Theme 2 agritech as a tool-calling decision agent. Live public data supports the required agent behavior and a reliable demo.
 - **D2 — 2026-10-30:** Exclude browser agents for government portals, emergency logistics swarms, and hardware grid control. These paths depend on fragile or unavailable data sources.

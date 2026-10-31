@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T6 — Streaming agent route and tool trace protocol**
-- Next eligible task: none while T6 is active
-- Application status: T6 is active. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: none
+- Next eligible task: **T7 — Trace panel**
+- Application status: T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -132,6 +132,16 @@ Remaining work: Add the Gemini agent loop, tool declarations, streaming route, t
 Exact next step: Record the AI SDK integration decision, install the frozen-stack AI SDK packages, then implement the route.
 Blocker: None currently.
 Commit: This claim commit.
+
+### 2026-10-31 — T6 completion
+Status: [x] done
+Files changed: `DECISIONS.md`, `package.json`, `package-lock.json`, `lib/agent/agent.ts`, `app/api/chat/route.ts`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed and emitted `/api/chat`. A real Gemini-backed production request returned HTTP 200 with text, tool-call, tool-result, and done SSE events. A real temporary profile/chat flow persisted one advisory row with its tool trace; the temporary farmer row was deleted afterward.
+Result: Added the frozen-stack `ai` and `@ai-sdk/google` integration, live geocode/weather/mandi tool declarations, six-step guarded agent instructions, custom SSE trace protocol, and advisory persistence with timeout/retry handling.
+Remaining work: None for T6.
+Exact next step: Claim T7, then render streamed tool-call/result events in a farmer-readable trace panel.
+Blocker: None for T6.
+Commit: Completion commit.
 
 ### 2026-10-31 — T5 claim
 Status: [~] active
