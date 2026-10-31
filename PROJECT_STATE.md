@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T3 — Geocode and weather tools with typed responses and real-response caching**
-- Next eligible task: none while T3 is active
-- Application status: T3 is active. Open-Meteo tools are implemented and live-validated. Supabase is reachable, but `public.api_cache` is not present in the configured project, so cache verification is pending migration application.
+- Active task: none
+- Next eligible task: **T4 — Mandi tool with district-to-state fallback and no-data behavior**
+- Application status: T3 is complete. Open-Meteo tools are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -112,3 +112,13 @@ Remaining work: Apply `supabase/migrations/0001_initial_schema.sql` to the confi
 Exact next step: Run the migration in Supabase SQL Editor, then rerun the read-only cache check and the T3 live cache flow.
 Blocker: The configured Supabase project has not applied the repository migration; no cache table exists.
 Commit: Checkpoint commit.
+
+### 2026-10-31 — T3 completion
+Status: [x] done
+Files changed: `lib/agent/tools/types.ts`, `lib/agent/tools/http.ts`, `lib/agent/tools/geocode.ts`, `lib/agent/tools/weather.ts`, `lib/cache.ts`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed. Real Open-Meteo geocoding returned one New Delhi result. Real Open-Meteo forecast returned seven days. Read-only Supabase REST access confirmed `public.api_cache` exists after migration application.
+Result: T3 is complete. The tools provide source-stamped typed responses, timeout/retry handling, live-response caching, and cache-age metadata for cached fallback responses.
+Remaining work: None for T3.
+Exact next step: Claim T4, then implement the data.gov.in mandi tool with district-first, state-fallback, actual arrival date, and typed no-data behavior.
+Blocker: None for T3.
+Commit: Completion commit.
