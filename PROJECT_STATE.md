@@ -432,3 +432,13 @@ Remaining work: Run `npm run smoke` with local Gemini and data.gov.in credential
 Exact next step: Restore the seven required values in `.env.local` without committing them, then rerun the T17 credentialed checks.
 Blocker: This workspace has no nonempty values for `GEMINI_API_KEY`, `DATA_GOV_IN_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `TELEGRAM_BOT_TOKEN`, or `CRON_SECRET`.
 Commit: pending checkpoint commit.
+
+### 2026-10-31 — T17 redeploy recheck
+Status: [~] active
+Files changed: `PROJECT_STATE.md`.
+Checks and real calls: Confirmed `main` is current with `origin/main` after the Vercel redeploy trigger. All seven required local credential entries remain empty without reading values. The public homepage returned 200, profile route returned 200, unauthenticated alert access returned 401, and a real Hindi New Delhi chat returned 200 with `tool_call`, `tool_result`, `text_delta`, and `done` events.
+Result: The redeployed public demo path remains healthy, including Hindi output and the transparency event sequence. Alert authorization remains protected.
+Remaining work: Run `npm run smoke` with local Gemini and data.gov.in credentials, then run the protected alert route with the local cron secret to confirm its authorized path.
+Exact next step: Restore the seven required values in `.env.local` without committing them, then rerun the T17 credentialed checks.
+Blocker: This workspace has no nonempty values for `GEMINI_API_KEY`, `DATA_GOV_IN_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `TELEGRAM_BOT_TOKEN`, or `CRON_SECRET`.
+Commit: pending recheck commit.
