@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T20 — Conversation memory**
-- Next eligible task: none while T20 is active
+- Active task: **none**
+- Next eligible task: **T21 — Decision signals**
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -542,3 +542,13 @@ Remaining work: Verify a real follow-up question on the Preview deployment, then
 Exact next step: Push this checkpoint, wait for Preview deployment, and send a first live question followed by “And tomorrow?” with the returned answer as history.
 Blocker: None in code; live verification depends on Preview deployment availability.
 Commit: pending implementation checkpoint.
+
+### 2026-10-31 — T20 completion
+Status: [x] done
+Files changed: `lib/conversation.ts`, `lib/agent/agent.ts`, `app/api/chat/route.ts`, `app/page.tsx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: ESLint passed; strict TypeScript passed; production build passed; diff check passed. On the updated Vercel Preview, the first live weather question returned 860 answer characters and a `done` event with no error; the follow-up “And tomorrow?” sent the first answer as history, returned 790 answer characters and a `done` event with no error, and invoked four live tool calls.
+Result: T20 is complete. Conversation history is capped at six validated messages, passed as untrusted context beneath system rules, and resettable with New conversation.
+Remaining work: T21 — decision signals.
+Exact next step: Claim T21 in `TASKS.md` and `PROJECT_STATE.md` before writing code.
+Blocker: None.
+Commit: pending completion.
