@@ -23,6 +23,24 @@ function profileToForm(profile: FarmerProfile | null) {
   };
 }
 
+type TraceEvent = {
+  type: string;
+  tool?: string;
+  input?: unknown;
+  result?: unknown;
+  fetched_at?: string;
+};
+
+function formatTraceValue(value: unknown): string {
+  if (value === null || value === undefined) return "—";
+  if (typeof value === "string") return value;
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return "Unavailable";
+  }
+}
+
 export default function Home() {
   const deviceId = useRef("");
   const [profile, setProfile] = useState<FarmerProfile | null>(null);
@@ -30,6 +48,9 @@ export default function Home() {
   const [question, setQuestion] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
   const [questionMessage, setQuestionMessage] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [trace, setTrace] = useState<TraceEvent[]>([]);
+  const [asking, setAsking] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -77,9 +98,57 @@ export default function Home() {
     }
   }
 
-  function submitQuestion(event: FormEvent<HTMLFormElement>) {
+  async function submitQuestion(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setQuestionMessage(question.trim() ? "Question captured. The live advisory connection will answer it in the next step." : "Write a question first.");
+    const submittedQuestion = question.trim();
+    if (!submittedQuestion) {
+      setQuestionMessage("Write a question first.");
+      return;
+    }
+    setAsking(true);
+    setAnswer("");
+    setTrace([]);
+    setQuestionMessage("Live sources are being checked…");
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          question: submittedQuestion,
+          language: form.language,
+          device_id: deviceId.current,
+          place_name: form.place_name,
+          state: form.state,
+          district: form.district,
+          crops: form.crops.split(",").map((crop) => crop.trim()).filter(Boolean),
+        }),
+      });
+      if (!response.ok || !response.body) throw new Error("The advisory service is unavailable.");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      while (true) {
+        const chunk = await reader.read();
+        buffer += decoder.decode(chunk.value ?? new Uint8Array(), { stream: !chunk.done });
+        const messages = buffer.split("\n\n");
+        buffer = messages.pop() ?? "";
+        for (const message of messages) {
+          const line = message.split("\n").find((item) => item.startsWith("data: "));
+          if (!line) continue;
+          const event = JSON.parse(line.slice(6)) as TraceEvent & { text?: string; error?: string };
+          if (event.type === "text_delta" && event.text) setAnswer((current) => current + event.text);
+          if (event.type === "tool_call" || event.type === "tool_result") setTrace((current) => [...current, event]);
+          if (event.type === "error") throw new Error(event.error ?? "The advisory service is unavailable.");
+          if (event.type === "done") setQuestionMessage("Answer grounded in the trace below.");
+        }
+        if (chunk.done) break;
+      }
+    } catch (error) {
+      setQuestionMessage(error instanceof Error ? error.message : "The advisory service is unavailable.");
+    } finally {
+      setAsking(false);
+    }
   }
 
   return (
@@ -106,7 +175,8 @@ export default function Home() {
             </form>
           </div>
 
-          <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8"><p className="text-sm font-medium text-[#65806c]">Ask KisanPilot</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">What do you want to decide?</h2><form className="mt-6" onSubmit={submitQuestion}><textarea className="min-h-32 w-full resize-y rounded-2xl border border-[#d5dfd2] px-4 py-4 leading-6 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Type a question about your crop or farm…" value={question} onChange={(event) => setQuestion(event.target.value)} /><div className="mt-4 flex flex-wrap items-center gap-3"><button className="rounded-xl bg-[#173b2b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#102b1e]" type="submit">Submit question</button>{questionMessage && <p className="max-w-md text-sm text-[#58705c]" role="status">{questionMessage}</p>}</div></form></div>
+          <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8"><p className="text-sm font-medium text-[#65806c]">Ask KisanPilot</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">What do you want to decide?</h2><form className="mt-6" onSubmit={submitQuestion}><textarea className="min-h-32 w-full resize-y rounded-2xl border border-[#d5dfd2] px-4 py-4 leading-6 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Type a question about your crop or farm…" value={question} onChange={(event) => setQuestion(event.target.value)} /><div className="mt-4 flex flex-wrap items-center gap-3"><button className="rounded-xl bg-[#173b2b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#102b1e] disabled:cursor-wait disabled:opacity-60" disabled={asking} type="submit">{asking ? "Checking live sources…" : "Submit question"}</button>{questionMessage && <p className="max-w-md text-sm text-[#58705c]" role="status">{questionMessage}</p>}</div></form>{answer && <div className="mt-7 rounded-2xl bg-[#f5f7f2] p-5"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#65806c]">Live answer</p><p className="mt-3 whitespace-pre-wrap leading-7 text-[#26382b]">{answer}</p></div>}</div>
+          {trace.length > 0 && <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8"><div className="flex items-center justify-between gap-4"><div><p className="text-sm font-medium text-[#65806c]">Transparency</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Tool trace</h2></div><span className="rounded-full bg-[#edf4e7] px-3 py-1 text-xs font-medium text-[#476c4f]">{trace.length} events</span></div><div className="mt-6 space-y-3">{trace.map((event, index) => { const result = event.result && typeof event.result === "object" ? event.result as Record<string, unknown> : null; const source = typeof result?.source === "string" ? result.source : "Source returned by tool"; const fetchedAt = typeof result?.fetched_at === "string" ? result.fetched_at : event.fetched_at; return <div className="rounded-2xl border border-[#e4ebe1] p-4" key={`${event.type}-${index}`}><div className="flex flex-wrap items-center justify-between gap-2"><p className="font-medium">{event.tool ?? "Tool"}</p><span className="text-xs font-medium uppercase tracking-wide text-[#65806c]">{event.type === "tool_call" ? "Requested" : "Result"}</span></div>{event.type === "tool_call" ? <p className="mt-2 break-words text-sm text-[#58705c]">Input: {formatTraceValue(event.input)}</p> : <><p className="mt-2 break-words text-sm text-[#58705c]">Source: {source}</p><p className="mt-1 text-xs text-[#819083]">Fetched: {fetchedAt ? new Date(fetchedAt).toLocaleString() : "Unavailable"}{result?.cached === true && ` · Cached${typeof result.cache_age_seconds === "number" ? ` · ${result.cache_age_seconds}s old` : ""}`}</p><p className="mt-2 break-words text-sm text-[#334c39]">{formatTraceValue(result?.data ?? result?.error ?? result)}</p></>}</div>; })}</div></div>}
         </section>
       </div>
     </main>
