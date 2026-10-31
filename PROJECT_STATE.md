@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T19 — Public endpoint hardening (Phase 2).**
-- Next eligible task: T20 — Conversation memory, after T19 is complete.
+- Active task: **none**
+- Next eligible task: **T20 — Conversation memory**
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -512,3 +512,13 @@ Remaining work: Run the four required app-level checks against an authorized pre
 Exact next step: Provide an authorized Vercel preview access path or disable Preview Deployment Protection, then rerun the checks.
 Blocker: Vercel Authentication is enabled on `kisan-pilot-k1cy9fzzd-navyora.vercel.app` and prevents route-level verification.
 Commit: pending checkpoint.
+
+### 2026-10-31 — T19 completion
+Status: [x] done
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: On the supplied unprotected Vercel Preview URL, homepage returned 200; `/api/telegram` without a secret and with a wrong secret each returned application-level 401; a normal `/api/chat` returned 200 with a `done` event and no error event; nine bounded requests using the same IP and device produced 200 for the first seven completed requests and 429 for requests eight and nine. The human confirmed the matching Telegram secret was added to Preview and the webhook was re-registered successfully.
+Result: T19 is complete. Public chat has best-effort per-IP and per-device rate limiting, explicit `maxDuration`, and friendly 429 handling. Telegram webhook verification fails closed and the Preview deployment is live-verified.
+Remaining work: T20 — conversation memory.
+Exact next step: Claim T20 in `TASKS.md` and `PROJECT_STATE.md` before writing code.
+Blocker: None.
+Commit: pending completion.

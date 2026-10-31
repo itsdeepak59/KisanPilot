@@ -25,7 +25,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T15 | [x] Second regional language. Stretch. | T12 | One complete flow works in the new language. |
 | T16 | [x] Submission README, architecture diagram, and 5–7 slide pitch deck. | T12 | Public repository documentation is complete. |
 | T17 | [x] Final production readiness review. | T16 | Secrets, environment, and all demo paths are checked. |
-| T19 | [~] Public endpoint hardening: rate limit `/api/chat`, set an explicit function duration, verify the Telegram webhook secret token. | T17 | Over-limit calls return a friendly 429; webhook without the secret is rejected; normal chat still works on the preview URL. |
+| T19 | [x] Public endpoint hardening: rate limit `/api/chat`, set an explicit function duration, verify the Telegram webhook secret token. | T17 | Over-limit calls return a friendly 429; webhook without the secret is rejected; normal chat still works on the preview URL. |
 | T20 | [ ] Conversation memory: follow-up questions keep the last turns, with a New conversation button. | T19 | "And tomorrow?" after a weather answer works without re-asking place or crop. |
 | T21 | [ ] Decision signals: code-computed harvest window, water balance, and sell/hold signal from live data, exposed as an agent tool and a UI card. | T20 | Every signal shows its inputs, rule, and sample size; insufficient history says so; unit tests pass. |
 | T22 | [ ] Official-advisory retrieval upgrade: several verified official sources, chunking, topic ranking, season awareness. | T20 | Answers cite the top ranked chunks with real URLs and fetch times; topic changes the result; no invented sources. |
@@ -38,7 +38,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-Phase 2 (improvement) is active. T0–T17 are complete and deployed. T18 is human-only and must not be claimed by any agent.
+Phase 2 (improvement) is active. T0–T19 are complete and deployed to the improvement preview. T18 is human-only and must not be claimed by any agent.
 Take the first unchecked task from T19 onward, in order. Follow the "Phase 2 operating rules" in `AGENTS.md`: work on branch `improve`, never push to `main`, and verify on the Vercel preview URL.
 
 ## Phase 2 task details
