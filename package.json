@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "smoke": "node --env-file-if-exists=.env.local scripts/smoke/live-apis.mjs",
-    "test:decision": "node --experimental-strip-types --test scripts/test/decision-signals.test.ts"
+    "test:decision": "node --experimental-strip-types --test scripts/test/decision-signals.test.mjs"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.109",

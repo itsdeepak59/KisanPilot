@@ -582,3 +582,13 @@ Remaining work: Obtain the new Vercel Preview deployment URL or trigger/confirm 
 Exact next step: Provide the new Preview URL from the deployment for `improve` commit `601d9b8`, or confirm when Vercel has deployed that commit.
 Blocker: Vercel Preview aliases are not serving the pushed T21 commit; no Vercel deployment control or CLI is available in this workspace.
 Commit: pending checkpoint.
+
+### 2026-10-31 — T21 Vercel build fix
+Status: [~] active
+Files changed: `scripts/test/decision-signals.test.mjs`, `scripts/test/decision-signals.test.ts` (removed), `package.json`, and `PROJECT_STATE.md`.
+Checks and real calls: Vercel reported TS5097 because the `.ts` test imported another `.ts` file with an extension not enabled by the project config. Converted only the test runner to `.mjs`; the real TypeScript module remains unchanged. `npm run test:decision`, ESLint, strict TypeScript, production build, and diff check all pass locally.
+Result: The Vercel build failure is fixed without changing application behavior.
+Remaining work: Push this fix and confirm the new Vercel deployment succeeds, then resume T21 live verification.
+Exact next step: Push commit and inspect the new Vercel status/deployment.
+Blocker: None.
+Commit: pending fix commit.
