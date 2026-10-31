@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T18 — Record real demo and submit**
-- Next eligible task: **T18 — Record real demo and submit (active)**
+- Active task: **None.** T18 is human-only and blocked on a human recording; agents must not claim it.
+- Next eligible task: **T19 — Public endpoint hardening (Phase 2, branch `improve`)**
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -472,3 +472,13 @@ Remaining work: T18 — record a real demo and submit it.
 Exact next step: Claim T18, record the live profile, Hindi voice-or-text advisory, trace, and alert-check flow, then submit the video.
 Blocker: SoilGrids may be unavailable during the recording; show the explicit unavailable state rather than claiming a soil fact if it persists.
 Commit: pending completion commit.
+
+### 2026-10-31 — Phase 2 plan
+Status: [x] planned
+Files changed: `TASKS.md`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `DECISIONS.md`, `PROJECT_STATE.md`
+Checks and real calls: Reviewed the repository after T17: lint, type check, build and live route checks were already recorded as passing. No application code changed in this entry.
+Result: T18 is marked human-only. T19–T26 are queued. Phase 2 work runs on branch `improve` and is verified on the Vercel preview URL before the human merges to `main`.
+Remaining work: T19 through T26, then feature freeze, then the human completes T18.
+Exact next step: Read `AGENTS.md`, switch to branch `improve`, claim T19, and commit the claim on `improve`.
+Blocker: Human must create the `v1-stable` tag and `improve` branch, and enable Preview environment variables in Vercel (see PHASE2_RUNBOOK.md).
+Commit: pending.

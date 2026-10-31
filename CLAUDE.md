@@ -50,3 +50,15 @@ Before a task is marked complete:
 If a required credential, service, or product decision is absent, complete everything that does not need it, checkpoint the exact blocker, and ask one precise question. Do not substitute fake data or a fake success path.
 
 This file is intentionally identical in `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md`.
+
+## Phase 2 operating rules (improvement phase; these override the earlier "pull main" steps)
+
+- T18 is human-only. Never claim, resume, or mark it. Choose the first unchecked task from T19 upward whose dependencies are complete.
+- Work only on branch `improve`: `git fetch`, `git checkout improve` (create it from `main` if it does not exist), `git pull`. Commit and push to `improve`. Never push to `main`, never force push, never reset hard. The human merges to `main`.
+- Verify every finished task on the Vercel preview URL for `improve` when it is reachable, plus lint, `npx tsc --noEmit`, and `npm run build`. If preview environment variables are missing, record that as the blocker and ask the human; do not skip verification silently.
+- Database changes are additive migrations in `supabase/migrations/`. You cannot assume they are applied: list the exact SQL as a human step in `PROJECT_STATE.md` and keep the app working when the new columns are absent.
+- Never open, print, copy, or ask for the contents of `.env.local`. Check only that variable names exist. New environment variable names go in `.env.example` and the README.
+- Every score-relevant claim in code comments, README, deck, or answers must match what is implemented. Remove or soften claims you cannot demonstrate.
+- No mock, sample, placeholder, or hardcoded business data, including in tests of the running app. Tests may use inline inputs for pure functions only, never as app data.
+- Respect the FEATURE FREEZE row in `TASKS.md`. After it, only bug fixes.
+- Keep chat replies short. State what you found, what you will do, and what the human must do.
