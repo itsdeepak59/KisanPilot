@@ -1,5 +1,8 @@
 import { runFarmAgent } from "@/lib/agent/agent";
+import { getRequestIp, limitChatRequest } from "@/lib/rate-limit";
 import { createServerSupabaseClient } from "@/lib/supabase";
+
+export const maxDuration = 60;
 
 type ChatInput = {
   question?: unknown;
@@ -58,6 +61,13 @@ export async function POST(request: Request) {
   if (!question || question.length > 4_000) return Response.json({ ok: false, error: "A question is required" }, { status: 400 });
 
   const deviceId = typeof input.device_id === "string" ? input.device_id.trim() : "";
+  const rateLimit = limitChatRequest([`ip:${getRequestIp(request)}`, ...(deviceId ? [`device:${deviceId}`] : [])]);
+  if (!rateLimit.ok) {
+    return Response.json(
+      { ok: false, error: "Too many advisory questions. Please wait a minute and try again." },
+      { status: 429, headers: { "retry-after": String(rateLimit.retryAfterSeconds) } },
+    );
+  }
   const context = JSON.stringify({
     place_name: typeof input.place_name === "string" ? input.place_name : null,
     state: typeof input.state === "string" ? input.state : null,

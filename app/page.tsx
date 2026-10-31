@@ -202,7 +202,10 @@ export default function Home() {
           crops: form.crops.split(",").map((crop) => crop.trim()).filter(Boolean),
         }),
       });
-      if (!response.ok || !response.body) throw new Error("The advisory service is unavailable.");
+      if (!response.ok || !response.body) {
+        const result = await response.json().catch(() => null) as { error?: unknown } | null;
+        throw new Error(typeof result?.error === "string" ? result.error : "The advisory service is unavailable.");
+      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();

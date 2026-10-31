@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { sendTelegramMessage } from "@/lib/telegram";
 import { withDatabaseRetry } from "@/lib/db";
@@ -7,6 +8,13 @@ type TelegramUpdate = {
 };
 
 export async function POST(request: Request) {
+  const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  const receivedSecret = request.headers.get("x-telegram-bot-api-secret-token");
+  if (!secret) return Response.json({ ok: false, error: "Telegram webhook is not configured" }, { status: 503 });
+  if (!receivedSecret || receivedSecret.length !== secret.length || !timingSafeEqual(Buffer.from(receivedSecret), Buffer.from(secret))) {
+    return Response.json({ ok: false, error: "Unauthorized Telegram webhook" }, { status: 401 });
+  }
+
   let update: TelegramUpdate;
   try {
     update = (await request.json()) as TelegramUpdate;

@@ -492,3 +492,13 @@ Remaining work: Add bounded chat rate limiting, an explicit streaming duration, 
 Exact next step: Inspect the chat and Telegram routes and existing request/profile helpers before implementing the hardening controls.
 Blocker: Preview environment variables and deployment URL availability are not yet verified.
 Commit: pending claim commit.
+
+### 2026-10-31 — T19 checkpoint
+Status: [~] active
+Files changed: `lib/rate-limit.ts`, `app/api/chat/route.ts`, `app/api/telegram/route.ts`, `app/page.tsx`, `.env.example`, `README.md`, `DECISIONS.md`, `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: `npm run lint` and `npx tsc --noEmit` passed. `npm run build` reached a local Turbopack CSS-worker failure before application compilation; `npm run build -- --webpack` passed, including route compilation. The local chat route made a real configured-provider call and returned HTTP 200. The pure limiter check returned `{ ok: false, retryAfterSeconds: 60 }` after nine requests for the same IP/device. An unsigned local Telegram request returned HTTP 503 because `TELEGRAM_WEBHOOK_SECRET` is intentionally absent locally, confirming fail-closed configuration behavior.
+Result: Chat has a best-effort per-IP and per-device 8/minute limit with friendly 429 responses and `Retry-After`; it has `maxDuration = 60`; Telegram rejects updates unless the configured secret header matches in constant time; the UI displays JSON API errors; the new environment variable and human registration step are documented.
+Remaining work: Verify a 429 response, a missing/wrong Telegram header (401), a matching-header Telegram webhook, and a normal chat on the Vercel `improve` preview.
+Exact next step: Add `TELEGRAM_WEBHOOK_SECRET` to Vercel Preview, re-register Telegram with it as `secret_token`, then provide the reachable `improve` preview URL or confirm its deployment so the required preview checks can run.
+Blocker: The secret is not configured locally, no Vercel preview URL is available in the repository, and preview environment-variable state cannot be inspected from this workspace without external Vercel access.
+Commit: pending checkpoint commit.

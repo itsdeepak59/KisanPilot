@@ -73,6 +73,7 @@ flowchart LR
    NEXT_PUBLIC_SUPABASE_ANON_KEY=
    SUPABASE_SERVICE_ROLE_KEY=
    TELEGRAM_BOT_TOKEN=
+   TELEGRAM_WEBHOOK_SECRET=
    CRON_SECRET=
    ```
 
@@ -85,6 +86,10 @@ flowchart LR
    ```
 
 5. Open `http://localhost:3000`, save a real farm profile, and ask a question. The source trace appears beneath the answer.
+
+### Telegram webhook setup
+
+Set a non-empty `TELEGRAM_WEBHOOK_SECRET` in both Vercel Preview and Production environments, then re-register the Telegram webhook with that same value as its `secret_token`. KisanPilot rejects webhook updates when the configured secret is absent or the `X-Telegram-Bot-Api-Secret-Token` header does not match. Keep the value only in Vercel and `.env.local`; never commit it.
 
 ## Verification commands
 
