@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T7 — Trace panel**
-- Application status: T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T7 — Trace panel**
+- Next eligible task: none while T7 is active
+- Application status: T7 is active. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -182,3 +182,13 @@ Remaining work: None for T4.
 Exact next step: Claim T5, then build the core chat/profile UI with language selection and typed input.
 Blocker: None for T4.
 Commit: Completion commit.
+
+### 2026-10-31 — T7 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. T6 streaming route and SSE event protocol are present and pushed.
+Result: T7 is the sole active task.
+Remaining work: Connect the question form to `/api/chat` and render trace events in the farmer UI.
+Exact next step: Add client-side SSE parsing and a compact trace panel without inventing tool data.
+Blocker: None currently.
+Commit: This claim commit.
