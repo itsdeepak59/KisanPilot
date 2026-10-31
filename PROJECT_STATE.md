@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T12 — Deployed phone end-to-end rehearsal**
-- Next eligible task: none while T12 is active
-- Application status: T12 is active. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: none
+- Next eligible task: **T13 — Real price trend chart**
+- Application status: T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -312,3 +312,13 @@ Remaining work: Verify public deployment health, API routes, mobile-sized respon
 Exact next step: Run public production checks, including profile validation, chat response behavior, and Telegram webhook reachability.
 Blocker: None currently.
 Commit: This claim commit.
+
+### 2026-10-31 — T12 completion
+Status: [x] done
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: Public `https://kisanpilot.vercel.app` returned HTTP 200 with an iPhone user agent. Public `/api/telegram` returned HTTP 200 for an ignored update. Public `/api/alerts/run` returned HTTP 401 without authorization. Public `/api/chat` returned HTTP 200 with streamed text, tool-call, tool-result, and done events. This was a mobile-user-agent rehearsal; physical handset visual QA remains a user-side optional check.
+Result: Deployment and mobile-oriented core flows are reachable and correctly protected.
+Remaining work: None for T12.
+Exact next step: Claim T13, then build a real mandi price trend from retained observations only.
+Blocker: None for T12.
+Commit: Completion commit.
