@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T17 is active. Recheck production environment, configured secret names, deployed routes, and demo-critical flows without exposing secret values.
+T17 is active. Production public routes and chat streaming passed, but local credentialed smoke and authorized alert checks remain pending because `.env.local` has none of the seven required values.
 
 ## Required note format
 
