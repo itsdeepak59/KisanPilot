@@ -272,3 +272,13 @@ Remaining work: Implement Telegram webhook linking, alert evaluation, protected 
 Exact next step: Inspect credential presence, then add the webhook and alert routes with live-weather/market-only alert decisions.
 Blocker: Real Telegram delivery requires `TELEGRAM_BOT_TOKEN`; protected and scheduled execution requires `CRON_SECRET`.
 Commit: This claim commit.
+
+### 2026-10-31 — T11 checkpoint
+Status: [~] active
+Files changed: `DECISIONS.md`, `lib/telegram.ts`, `lib/db.ts`, `app/api/telegram/route.ts`, `app/api/alerts/run/route.ts`, `vercel.json`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed and emitted `/api/telegram` and `/api/alerts/run`. Production-app checks returned HTTP 401 for an unauthenticated alert run and HTTP 400 for malformed Telegram webhook input. No Telegram delivery call was attempted because `TELEGRAM_BOT_TOKEN` and `CRON_SECRET` are absent.
+Result: Added Telegram `/link <device_id>` webhook handling, protected alert execution, live two-day weather risk evaluation, Telegram send timeout/retry handling, alert persistence, and hourly Vercel Cron configuration. Weather alerts use the documented 20 mm rain / 40 km/h wind MVP heuristic.
+Remaining work: Add the two Telegram/cron secrets, then run a real webhook link and alert delivery check before marking T11 complete.
+Exact next step: Add nonempty `TELEGRAM_BOT_TOKEN` and `CRON_SECRET` to `.env.local`, then tell me to continue T11 verification.
+Blocker: `TELEGRAM_BOT_TOKEN` and `CRON_SECRET` are not configured.
+Commit: Checkpoint commit.
