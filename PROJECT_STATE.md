@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T13 — Real price trend chart**
-- Application status: T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T13 — Real price trend chart**
+- Next eligible task: none while T13 is active
+- Application status: T13 is active. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -322,3 +322,13 @@ Remaining work: None for T12.
 Exact next step: Claim T13, then build a real mandi price trend from retained observations only.
 Blocker: None for T12.
 Commit: Completion commit.
+
+### 2026-10-31 — T13 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. T4 mandi data and T12 deployment are complete.
+Result: T13 is the sole active task.
+Remaining work: Retain real mandi observations and render a trend from those observations only.
+Exact next step: Record the retention decision, add the migration and persistence path, then add a chart surface with an explicit no-history state.
+Blocker: The new observation table must be applied to Supabase before end-to-end chart verification.
+Commit: This claim commit.
