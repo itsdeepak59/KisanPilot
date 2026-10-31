@@ -64,3 +64,11 @@ The smoke script is `scripts/smoke/live-apis.mjs`. It enforces an eight-second t
 - Impact: T1 is complete. The four data-source checks and Gemini function-calling check all pass.
 - References: [Gemini 3.5 Flash-Lite model](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite) and [Gemini function-calling guide](https://ai.google.dev/gemini-api/docs/generate-content/function-calling).
 
+### 2026-10-31 — data.gov.in mandi tool
+
+- Endpoint: `https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070`.
+- Live fields: `state`, `district`, `market`, `commodity`, `variety`, `grade`, `arrival_date`, `min_price`, `max_price`, and `modal_price`.
+- Result: a real Andhra Pradesh / Sri Sathya Sai / Maize district query returned three records, including arrival date `31/10/2026`.
+- Finding: the API returned zero records when state and commodity filters were combined, even though the state-only response contained 298 records and 45 Maize records. The tool therefore queries district plus commodity first; on fallback it queries the state and filters the live records by commodity in typed code.
+- Impact: T4 is not blocked. No-data remains explicit when neither live query nor timestamped cache has records.
+
