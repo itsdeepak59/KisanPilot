@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T10 — Error and edge-case hardening**
-- Application status: T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T10 — Error and edge-case hardening**
+- Next eligible task: none while T10 is active
+- Application status: T10 is active. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -242,3 +242,13 @@ Remaining work: None for T9.
 Exact next step: Claim T10, then harden invalid input, unavailable-provider, stream, and cache failure paths.
 Blocker: None for T9.
 Commit: Completion commit.
+
+### 2026-10-31 — T10 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. T6-T9 dependencies are complete and pushed.
+Result: T10 is the sole active task.
+Remaining work: Add boundary validation and failure-path checks without weakening the no-fabrication rules.
+Exact next step: Harden tool inputs and the SSE client/server failure paths, then run real invalid-input and unavailable-provider checks.
+Blocker: None currently.
+Commit: This claim commit.
