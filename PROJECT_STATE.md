@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T22 — Official-advisory retrieval upgrade**
-- Next eligible task: none while T22 is active
+- Active task: **T23 — Demoable alerts**
+- Next eligible task: none while T23 is active
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -622,3 +622,23 @@ Remaining work: Push this checkpoint and verify topic-changing advisory response
 Exact next step: Push the implementation, wait for Vercel success, then run two real advisory chats with different topics.
 Blocker: None.
 Commit: pending implementation checkpoint.
+
+### 2026-10-31 — T22 completion
+Status: [x] done
+Files changed: `lib/agent/tools/advisory.ts`, `lib/agent/agent.ts`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: ICAR Kharif, ICAR Rabi, and IMD Crop Specific Advisory pages were live-verified. ESLint, strict TypeScript, production build, and diff check passed. On Preview, a wheat/rabi question returned three matches with ICAR Rabi ranked first; a rice/kharif question returned three matches with ICAR Kharif ranked first. Both chats returned HTTP 200, completed without errors, and included official URLs and per-match fetched timestamps.
+Result: T22 is complete. Advisory retrieval is multi-source, chunked, topic/season-ranked, URL-bound, timestamped, and chemical-treatment filtered.
+Remaining work: T23 — demoable alerts.
+Exact next step: Claim T23, add configurable per-farmer thresholds and a device-scoped check endpoint/UI, then apply the additive Supabase migration before live verification.
+Blocker: None.
+Commit: pending completion.
+
+### 2026-10-31 — T23 claim
+Status: [~] active
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: T22 Preview verification passed on the updated `improve` deployment.
+Result: T23 is the sole active task.
+Remaining work: Add farmer alert thresholds, a protected device-scoped check endpoint, alert history, and UI comparison states while preserving the cron route.
+Exact next step: Inspect the existing alert route/schema/profile UI, then add the migration and shared alert evaluation service.
+Blocker: The new Supabase migration will require the human to apply SQL before final live verification.
+Commit: pending claim.
