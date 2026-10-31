@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **none**
-- Next eligible task: **T21 — Decision signals**
+- Active task: **T21 — Decision signals**
+- Next eligible task: none while T21 is active
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -552,3 +552,13 @@ Remaining work: T21 — decision signals.
 Exact next step: Claim T21 in `TASKS.md` and `PROJECT_STATE.md` before writing code.
 Blocker: None.
 Commit: pending completion.
+
+### 2026-10-31 — T21 claim
+Status: [~] active
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: T20 Preview two-turn verification passed on the updated `improve` deployment.
+Result: T21 is the sole active task.
+Remaining work: Add pure, transparent harvest-window, seven-day water-balance, and sell/hold calculations; expose them as a typed agent tool and UI card using only live forecast and retained mandi observations.
+Exact next step: Inspect the existing weather and mandi-observation result shapes, then add pure decision functions and focused tests without adding a dependency.
+Blocker: None.
+Commit: pending claim.
