@@ -59,6 +59,7 @@ type SpeechWindow = Window & {
 
 export default function Home() {
   const deviceId = useRef("");
+  const [deviceIdLabel, setDeviceIdLabel] = useState("");
   const [profile, setProfile] = useState<FarmerProfile | null>(null);
   const [form, setForm] = useState(profileToForm(null));
   const [question, setQuestion] = useState("");
@@ -86,7 +87,10 @@ export default function Home() {
         }
       })
       .catch(() => setSavedMessage("Profile could not be loaded. You can still enter it and try saving."))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setDeviceIdLabel(id);
+        setLoading(false);
+      });
   }, []);
 
   async function saveProfile(event: FormEvent<HTMLFormElement>) {
@@ -244,7 +248,7 @@ export default function Home() {
 
         <section className="space-y-6">
           <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8">
-            <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-sm font-medium text-[#65806c]">Your farm profile</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Start with your context</h2></div><span className="rounded-full bg-[#edf4e7] px-3 py-1 text-xs font-medium text-[#476c4f]">{loading ? "Loading" : profile ? "Saved" : "New profile"}</span></div>
+            <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-sm font-medium text-[#65806c]">Your farm profile</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Start with your context</h2></div><span className="rounded-full bg-[#edf4e7] px-3 py-1 text-xs font-medium text-[#476c4f]">{loading ? "Loading" : profile ? "Saved" : "New profile"}</span></div><p className="mt-4 break-all text-xs text-[#819083]">Browser device ID: <code>{deviceIdLabel || "Preparing…"}</code></p>
             <form className="mt-7 space-y-5" onSubmit={saveProfile}>
               <label className="block text-sm font-medium">Language<select className="mt-2 w-full rounded-xl border border-[#d5dfd2] bg-white px-4 py-3 outline-none focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" value={form.language} onChange={(event) => setForm({ ...form, language: event.target.value as ProfileLanguage })}><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
               <div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-medium">Village or town<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter your location" value={form.place_name} onChange={(event) => setForm({ ...form, place_name: event.target.value })} /></label><label className="block text-sm font-medium">District<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter district" value={form.district} onChange={(event) => setForm({ ...form, district: event.target.value })} /></label></div>

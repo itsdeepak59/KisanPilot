@@ -282,3 +282,13 @@ Remaining work: Add the two Telegram/cron secrets, then run a real webhook link 
 Exact next step: Add nonempty `TELEGRAM_BOT_TOKEN` and `CRON_SECRET` to `.env.local`, then tell me to continue T11 verification.
 Blocker: `TELEGRAM_BOT_TOKEN` and `CRON_SECRET` are not configured.
 Commit: Checkpoint commit.
+
+### 2026-10-31 — T11 credential verification
+Status: [~] active
+Files changed: `app/page.tsx`, `PROJECT_STATE.md`.
+Checks and real calls: `TELEGRAM_BOT_TOKEN` and `CRON_SECRET` are configured without printing values. Telegram `getMe` returned `ok: true` for `KisanPilot_bot`. The protected production alert endpoint returned HTTP 200 with zero linked farmers. ESLint, strict TypeScript, and production build passed after exposing the browser device ID in the profile UI.
+Result: The app now displays the device ID needed for Telegram linking. The webhook and alert workflow are ready for real chat verification.
+Remaining work: Link one real farmer chat and run a real alert delivery check.
+Exact next step: In Telegram, send `/link <device_id>` to `KisanPilot_bot`, using the device ID displayed in the app, then rerun the webhook and alert checks.
+Blocker: No Telegram chat is linked yet, so no real delivery can be verified.
+Commit: Checkpoint commit.
