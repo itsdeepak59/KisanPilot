@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T15 — Second regional language**
-- Next eligible task: none while T15 is active
+- Active task: **none**
+- Next eligible task: **T16 — Submission README, architecture diagram, and 5–7 slide pitch deck**
 - Application status: T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
@@ -93,15 +93,15 @@ Exact next step: Claim T15 in `TASKS.md` and `PROJECT_STATE.md` before writing c
 Blocker: None.
 Commit: pending
 
-### 2026-10-31 — T15 checkpoint
-Status: [~] active
+### 2026-10-31 — T15 completion
+Status: [x] done
 Files changed: `lib/profile.ts`, `app/api/chat/route.ts`, `lib/agent/agent.ts`, `app/page.tsx`, `supabase/migrations/0003_add_telugu_language.sql`, `TASKS.md`, and `PROJECT_STATE.md`.
-Checks and real calls: ESLint passed; strict TypeScript passed; production build passed. A real Telugu `/api/chat` stream returned Telugu text and the live ICAR source. A real Telugu `/api/profile` write reached Supabase but was rejected by the existing `farmers_language_check` constraint, confirming migration `0003` is required.
-Result: Telugu is implemented across profile validation, agent output, browser speech recognition/playback, and the language selector.
-Remaining work: Apply `supabase/migrations/0003_add_telugu_language.sql`, then repeat the real Telugu profile save/load and chat checks.
-Exact next step: Run the SQL migration in the Supabase SQL Editor, then tell me to continue T15 verification.
-Blocker: Supabase still allows only `en` and `hi` until migration `0003_add_telugu_language.sql` is applied.
-Commit: pending checkpoint.
+Checks and real calls: ESLint passed; strict TypeScript passed; production build passed. A real Telugu profile save and load returned HTTP 200 from Supabase with `language: "te"`. A real Telugu `/api/chat` stream returned HTTP 200, Telugu text, `get_official_advisory`, the live ICAR source URL, and a `done` event.
+Result: Telugu is complete across profile validation, Supabase persistence, agent output, browser speech recognition/playback, and the language selector.
+Remaining work: T16 is the next eligible task.
+Exact next step: Claim T16 in `TASKS.md` and `PROJECT_STATE.md` before writing submission materials.
+Blocker: None.
+Commit: pending completion.
 
 ### 2026-10-31 — T2 completion
 Status: [x] done
