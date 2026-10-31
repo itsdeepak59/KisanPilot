@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T16 — Submission README, architecture diagram, and 5–7 slide pitch deck**
-- Next eligible task: **T16 — Submission README, architecture diagram, and 5–7 slide pitch deck (active)**
-- Application status: T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **none**
+- Next eligible task: **T17 — Final production readiness review**
+- Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -402,3 +402,13 @@ Remaining work: Prepare public repository documentation, an architecture diagram
 Exact next step: Inspect existing repository assets and author the submission materials.
 Blocker: None.
 Commit: pending claim commit.
+
+### 2026-10-31 — T16 completion
+Status: [x] done
+Files changed: `README.md`, `docs/architecture-diagram.md`, `docs/pitch-deck.md`, `docs/output/kisanpilot-forge-pitch.pptx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: The PPTX passed first-party package integrity, layout, font-policy, and import validation with seven slides. Every rendered slide was visually reviewed; a last-slide numbering wrap was repaired and revalidated. `npm run lint` could not start because this workspace has no installed `node_modules` and `eslint` is unavailable. No application code changed.
+Result: Public submission materials now include an expanded README, editable Mermaid architecture diagram, seven-slide pitch narrative, and validated seven-slide PPTX. Claims are restricted to implemented capabilities and dated project verification.
+Remaining work: T17 — final production readiness review.
+Exact next step: Claim T17 and recheck production environment, secret presence, deployed routes, and demo-critical flows.
+Blocker: Local dependency installation is absent, so application lint/type/build checks need a restored `node_modules` before they can be rerun.
+Commit: pending completion commit.
