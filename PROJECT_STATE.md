@@ -532,3 +532,13 @@ Remaining work: Send and validate the last six conversation turns, preserve syst
 Exact next step: Add bounded conversation types and server validation, then wire the client history and reset control.
 Blocker: None.
 Commit: pending claim.
+
+### 2026-10-31 — T20 implementation checkpoint
+Status: [~] active
+Files changed: `lib/conversation.ts`, `lib/agent/agent.ts`, `app/api/chat/route.ts`, `app/page.tsx`, and `PROJECT_STATE.md`.
+Checks and real calls: ESLint passed; strict TypeScript passed; production build passed; diff check passed. The local two-turn call could not use the model because this workspace's local environment has no usable model credential, so live verification is deferred to the configured Preview deployment.
+Result: The client sends a bounded six-message history and exposes New conversation; the server validates, truncates, and passes earlier messages as untrusted context beneath the system rules.
+Remaining work: Verify a real follow-up question on the Preview deployment, then mark T20 complete.
+Exact next step: Push this checkpoint, wait for Preview deployment, and send a first live question followed by “And tomorrow?” with the returned answer as history.
+Blocker: None in code; live verification depends on Preview deployment availability.
+Commit: pending implementation checkpoint.

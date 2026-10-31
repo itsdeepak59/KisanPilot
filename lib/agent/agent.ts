@@ -6,6 +6,7 @@ import { getMandiPrices } from "@/lib/agent/tools/mandi";
 import { getWeatherForecast } from "@/lib/agent/tools/weather";
 import { getSoilProfile } from "@/lib/agent/tools/soil";
 import { getOfficialAdvisory } from "@/lib/agent/tools/advisory";
+import type { ConversationMessage } from "@/lib/conversation";
 
 type GeocodeInput = { query: string };
 type WeatherInput = { latitude: number; longitude: number; days?: number };
@@ -87,7 +88,7 @@ export const farmTools = {
   }),
 };
 
-export function runFarmAgent(question: string, language: "en" | "hi" | "te", context: string) {
+export function runFarmAgent(question: string, language: "en" | "hi" | "te", context: string, history: ConversationMessage[] = []) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY is not configured");
 
@@ -96,7 +97,7 @@ export function runFarmAgent(question: string, language: "en" | "hi" | "te", con
     system: `You are KisanPilot, a cautious farm decision agent. Answer in ${language === "hi" ? "Hindi" : language === "te" ? "Telugu" : "English"}. ${context}
 
 Call live tools for every weather, location, soil, mandi, price, date, advisory, or other factual claim. Use get_official_advisory for crop or seasonal guidance and cite its returned URL and fetched_at timestamp. Never invent values, dates, sources, or API results. If location or crop is missing, ask one concise clarifying question. Continue with available data when a tool fails and clearly name missing data. Never provide pesticide or chemical dosage; direct the farmer to a local KVK or agriculture officer instead. End a useful answer with two to four concrete actions that include dates only when those dates come from tool data.`,
-    prompt: question,
+    messages: [...history, { role: "user" as const, content: question }],
     tools: farmTools,
     stopWhen: stepCountIs(6),
     maxRetries: 1,
