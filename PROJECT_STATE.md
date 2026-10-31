@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T14 — Official-advisory RAG**
-- Application status: T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T14 — Official-advisory RAG**
+- Next eligible task: none while T14 is active
+- Application status: T14 is active. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -352,3 +352,13 @@ Remaining work: None for T13.
 Exact next step: Claim T14, then add official-advisory source retrieval with source URLs and timestamps.
 Blocker: None for T13.
 Commit: Completion commit.
+
+### 2026-10-31 — T14 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. T12 deployment and T13 real-data retention are complete.
+Result: T14 is the sole active task.
+Remaining work: Select an official Indian agriculture source set, define retrieval/indexing behavior, and add source-URL/timestamp citations to advisory responses.
+Exact next step: Confirm the official-source boundary before adding retrieval code or a new provider dependency.
+Blocker: The repository does not specify which official advisory sources or retrieval provider are approved; choosing one changes product scope and dependency surface.
+Commit: This claim commit.
