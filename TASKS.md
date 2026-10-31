@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T3 is active. Implement Open-Meteo geocoding and weather tools with typed live responses and real-response caching. T2 is complete; its Supabase save/load path can now be verified against the credentials in `.env.local`.
+T3 is active. Open-Meteo geocoding and forecast tools are implemented and live-validated. The Supabase project is reachable, but its `public.api_cache` table is not yet present, so cache write/read verification is pending migration application.
 
 ## Required note format
 

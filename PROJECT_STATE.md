@@ -7,7 +7,7 @@ This file is the operational source of truth for the next human or AI agent. Upd
 - Branch: `main`
 - Active task: **T3 — Geocode and weather tools with typed responses and real-response caching**
 - Next eligible task: none while T3 is active
-- Application status: T3 is active. T2 is complete; its Supabase save/load path can now be verified against the credentials in `.env.local`.
+- Application status: T3 is active. Open-Meteo tools are implemented and live-validated. Supabase is reachable, but `public.api_cache` is not present in the configured project, so cache verification is pending migration application.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -102,3 +102,13 @@ Remaining work: Implement and validate the Open-Meteo geocoding and forecast too
 Exact next step: Inspect the current Supabase schema/client types, then add the shared cache helper and two typed tools.
 Blocker: None currently.
 Commit: This claim commit.
+
+### 2026-10-31 — T3 checkpoint
+Status: [~] active
+Files changed: `lib/agent/tools/types.ts`, `lib/agent/tools/http.ts`, `lib/agent/tools/geocode.ts`, `lib/agent/tools/weather.ts`, `lib/cache.ts`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed. Real Open-Meteo geocoding returned one New Delhi result. Real Open-Meteo forecast returned seven days. A read-only Supabase REST check reached the configured project but returned `PGRST205` because `public.api_cache` is missing.
+Result: Added typed geocode and weather tools with eight-second timeout, one retry, source/timestamp envelopes, and Supabase-backed cache reads/writes with cache age on fallback.
+Remaining work: Apply `supabase/migrations/0001_initial_schema.sql` to the configured Supabase project, then verify a live tool response writes and reads from `api_cache`.
+Exact next step: Run the migration in Supabase SQL Editor, then rerun the read-only cache check and the T3 live cache flow.
+Blocker: The configured Supabase project has not applied the repository migration; no cache table exists.
+Commit: Checkpoint commit.
