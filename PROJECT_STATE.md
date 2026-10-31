@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T23 — Demoable alerts**
-- Next eligible task: none while T23 is active
+- Active task: **T24 — Demo robustness**
+- Next eligible task: none while T24 is active
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -652,3 +652,23 @@ Remaining work: Apply migration `0004_alert_thresholds.sql`, then verify profile
 Exact next step: Run the migration in Supabase SQL Editor, then tell me to continue T23 verification.
 Blocker: `public.farmers` lacks the three new threshold columns until the human applies migration `0004_alert_thresholds.sql`.
 Commit: pending implementation checkpoint.
+
+### 2026-10-31 — T23 completion
+Status: [x] done
+Files changed: `supabase/migrations/0004_alert_thresholds.sql`, `lib/profile.ts`, `lib/alerts/evaluate.ts`, `lib/rate-limit.ts`, `app/api/alerts/run/route.ts`, `app/api/alerts/check/route.ts`, `app/api/alerts/history/route.ts`, `components/alert-check.tsx`, `app/page.tsx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Vercel status for `5b48df4` succeeded. On Preview after migration application, profile save returned 200 and loaded thresholds `500` mm and `300` km/h; live alert check returned 200 with `breach=false` and `sent=false`; alert history returned 200 with zero rows; cron without authorization returned 401.
+Result: T23 is complete. Farmer-set weather thresholds, device-scoped checking, Telegram breach delivery, history, and cron compatibility are verified without fabricating an alert.
+Remaining work: T24 — demo robustness.
+Exact next step: Claim T24, add a real-input cache warm script, edge-case checks, and a standard test command.
+Blocker: None.
+Commit: pending completion.
+
+### 2026-10-31 — T24 claim
+Status: [~] active
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: T23 Preview verification passed after the human applied migration `0004_alert_thresholds.sql`.
+Result: T24 is the sole active task.
+Remaining work: Add demo robustness checks without adding sample business data, document edge-case outcomes, and make `npm test` run the repository's pure tests.
+Exact next step: Inspect existing smoke scripts and test setup, then add a CLI-driven cache warm script and edge-case matrix.
+Blocker: None.
+Commit: pending claim.
