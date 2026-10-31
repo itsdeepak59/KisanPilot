@@ -93,6 +93,16 @@ Exact next step: Claim T15 in `TASKS.md` and `PROJECT_STATE.md` before writing c
 Blocker: None.
 Commit: pending
 
+### 2026-10-31 — T15 checkpoint
+Status: [~] active
+Files changed: `lib/profile.ts`, `app/api/chat/route.ts`, `lib/agent/agent.ts`, `app/page.tsx`, `supabase/migrations/0003_add_telugu_language.sql`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: ESLint passed; strict TypeScript passed; production build passed. A real Telugu `/api/chat` stream returned Telugu text and the live ICAR source. A real Telugu `/api/profile` write reached Supabase but was rejected by the existing `farmers_language_check` constraint, confirming migration `0003` is required.
+Result: Telugu is implemented across profile validation, agent output, browser speech recognition/playback, and the language selector.
+Remaining work: Apply `supabase/migrations/0003_add_telugu_language.sql`, then repeat the real Telugu profile save/load and chat checks.
+Exact next step: Run the SQL migration in the Supabase SQL Editor, then tell me to continue T15 verification.
+Blocker: Supabase still allows only `en` and `hi` until migration `0003_add_telugu_language.sql` is applied.
+Commit: pending checkpoint.
+
 ### 2026-10-31 — T2 completion
 Status: [x] done
 Files changed: `DECISIONS.md`, `package.json`, `package-lock.json`, `app/layout.tsx`, `app/api/profile/route.ts`, `lib/profile.ts`, `lib/supabase.ts`, `supabase/migrations/0001_initial_schema.sql`, `TASKS.md`, and `PROJECT_STATE.md`.

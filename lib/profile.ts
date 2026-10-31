@@ -1,4 +1,4 @@
-export const PROFILE_LANGUAGES = ["en", "hi"] as const;
+export const PROFILE_LANGUAGES = ["en", "hi", "te"] as const;
 
 export type ProfileLanguage = (typeof PROFILE_LANGUAGES)[number];
 

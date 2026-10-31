@@ -54,7 +54,7 @@ export async function POST(request: Request) {
   }
 
   const question = typeof input.question === "string" ? input.question.trim() : "";
-  const language = input.language === "hi" ? "hi" : "en";
+  const language = input.language === "hi" || input.language === "te" ? input.language : "en";
   if (!question || question.length > 4_000) return Response.json({ ok: false, error: "A question is required" }, { status: 400 });
 
   const deviceId = typeof input.device_id === "string" ? input.device_id.trim() : "";

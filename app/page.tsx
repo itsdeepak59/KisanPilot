@@ -32,6 +32,8 @@ type TraceEvent = {
   fetched_at?: string;
 };
 
+const speechLanguage: Record<ProfileLanguage, string> = { en: "en-IN", hi: "hi-IN", te: "te-IN" };
+
 function formatTraceValue(value: unknown): string {
   if (value === null || value === undefined) return "—";
   if (typeof value === "string") return value;
@@ -132,7 +134,7 @@ export default function Home() {
     }
     recognition.current?.stop();
     const current = new Recognition();
-    current.lang = form.language === "hi" ? "hi-IN" : "en-IN";
+    current.lang = speechLanguage[form.language];
     current.interimResults = false;
     current.maxAlternatives = 1;
     current.onresult = (event) => {
@@ -164,7 +166,7 @@ export default function Home() {
     }
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(answer);
-    utterance.lang = form.language === "hi" ? "hi-IN" : "en-IN";
+    utterance.lang = speechLanguage[form.language];
     utterance.onend = () => setSpeaking(false);
     utterance.onerror = () => {
       setSpeaking(false);
@@ -251,7 +253,7 @@ export default function Home() {
           <div className="rounded-[2rem] border border-[#dce4d8] bg-white p-6 shadow-sm sm:p-8">
             <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-sm font-medium text-[#65806c]">Your farm profile</p><h2 className="mt-1 text-2xl font-semibold tracking-tight">Start with your context</h2></div><span className="rounded-full bg-[#edf4e7] px-3 py-1 text-xs font-medium text-[#476c4f]">{loading ? "Loading" : profile ? "Saved" : "New profile"}</span></div><p className="mt-4 break-all text-xs text-[#819083]">Browser device ID: <code>{deviceIdLabel || "Preparing…"}</code></p>
             <form className="mt-7 space-y-5" onSubmit={saveProfile}>
-              <label className="block text-sm font-medium">Language<select className="mt-2 w-full rounded-xl border border-[#d5dfd2] bg-white px-4 py-3 outline-none focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" value={form.language} onChange={(event) => setForm({ ...form, language: event.target.value as ProfileLanguage })}><option value="en">English</option><option value="hi">हिन्दी</option></select></label>
+              <label className="block text-sm font-medium">Language<select className="mt-2 w-full rounded-xl border border-[#d5dfd2] bg-white px-4 py-3 outline-none focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" value={form.language} onChange={(event) => setForm({ ...form, language: event.target.value as ProfileLanguage })}><option value="en">English</option><option value="hi">हिन्दी</option><option value="te">తెలుగు</option></select></label>
               <div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-medium">Village or town<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter your location" value={form.place_name} onChange={(event) => setForm({ ...form, place_name: event.target.value })} /></label><label className="block text-sm font-medium">District<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter district" value={form.district} onChange={(event) => setForm({ ...form, district: event.target.value })} /></label></div>
               <div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-medium">State<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Enter state" value={form.state} onChange={(event) => setForm({ ...form, state: event.target.value })} /></label><label className="block text-sm font-medium">Crops<input className="mt-2 w-full rounded-xl border border-[#d5dfd2] px-4 py-3 outline-none placeholder:text-[#9aa79c] focus:border-[#477652] focus:ring-2 focus:ring-[#c9ddc4]" placeholder="Comma-separated crops" value={form.crops} onChange={(event) => setForm({ ...form, crops: event.target.value })} /></label></div>
               <div className="flex flex-wrap items-center gap-3"><button className="rounded-xl bg-[#285d3d] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1e4b30] disabled:cursor-not-allowed disabled:opacity-60" disabled={saving || loading} type="submit">{saving ? "Saving…" : "Save profile"}</button>{savedMessage && <p className="text-sm text-[#58705c]" role="status">{savedMessage}</p>}</div>
