@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **none**
-- Next eligible task: **T20 — Conversation memory**
+- Active task: **T20 — Conversation memory**
+- Next eligible task: none while T20 is active
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -522,3 +522,13 @@ Remaining work: T20 — conversation memory.
 Exact next step: Claim T20 in `TASKS.md` and `PROJECT_STATE.md` before writing code.
 Blocker: None.
 Commit: pending completion.
+
+### 2026-10-31 — T20 claim
+Status: [~] active
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: T19 preview verification passed on the unprotected `improve` deployment.
+Result: T20 is the sole active task.
+Remaining work: Send and validate the last six conversation turns, preserve system rules over user history, pass the context to Gemini, and add a New conversation control.
+Exact next step: Add bounded conversation types and server validation, then wire the client history and reset control.
+Blocker: None.
+Commit: pending claim.
