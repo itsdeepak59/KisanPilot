@@ -332,3 +332,13 @@ Remaining work: Retain real mandi observations and render a trend from those obs
 Exact next step: Record the retention decision, add the migration and persistence path, then add a chart surface with an explicit no-history state.
 Blocker: The new observation table must be applied to Supabase before end-to-end chart verification.
 Commit: This claim commit.
+
+### 2026-10-31 — T13 checkpoint
+Status: [~] active
+Files changed: `DECISIONS.md`, `supabase/migrations/0002_mandi_observations.sql`, `lib/mandi-observations.ts`, `lib/agent/tools/mandi.ts`, `app/api/mandi/trend/route.ts`, `components/mandi-trend.tsx`, `app/page.tsx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed and emitted `/api/mandi/trend`. No fabricated chart data was added. Live retention/chart verification is pending the new Supabase table.
+Result: Added live-only mandi observation retention, a typed trend API, and a chart with an explicit no-history state.
+Remaining work: Apply `supabase/migrations/0002_mandi_observations.sql`, make a real mandi call, then verify retained observations appear in `/api/mandi/trend`.
+Exact next step: Run the migration in Supabase SQL Editor, then tell me to continue T13 verification.
+Blocker: `public.mandi_observations` does not exist until the new migration is applied.
+Commit: Checkpoint commit.

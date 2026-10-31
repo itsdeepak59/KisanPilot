@@ -1,6 +1,7 @@
 import { readCache, writeCache } from "@/lib/cache";
 import { fetchJson } from "@/lib/agent/tools/http";
 import type { ToolResult } from "@/lib/agent/tools/types";
+import { retainMandiObservations } from "@/lib/mandi-observations";
 
 const SOURCE = "data.gov.in mandi prices";
 const RESOURCE_ID = "9ef84268-d588-465a-a308-a864a43d0070";
@@ -100,6 +101,7 @@ export async function getMandiPrices(state: string, district: string, commodity:
   if (districtResult.ok && districtResult.records.length > 0) {
     const data: MandiPrices = { state: normalizedState, district: normalizedDistrict, commodity: normalizedCommodity, scope: "district", records: districtResult.records };
     await writeCache(districtKey, SOURCE, data, CACHE_TTL_SECONDS);
+    await retainMandiObservations(districtResult.records);
     return { ok: true, data, source: SOURCE, fetched_at: fetchedAt };
   }
 
@@ -108,6 +110,7 @@ export async function getMandiPrices(state: string, district: string, commodity:
   if (stateResult.ok && stateResult.records.length > 0) {
     const data: MandiPrices = { state: normalizedState, district: null, commodity: normalizedCommodity, scope: "state", records: stateResult.records };
     await writeCache(stateKey, SOURCE, data, CACHE_TTL_SECONDS);
+    await retainMandiObservations(stateResult.records);
     return { ok: true, data, source: SOURCE, fetched_at: fetchedAt };
   }
 
