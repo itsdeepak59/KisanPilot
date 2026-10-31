@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T9 — Voice input and spoken response**
-- Application status: T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T9 — Voice input and spoken response**
+- Next eligible task: none while T9 is active
+- Application status: T9 is active. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -222,3 +222,13 @@ Remaining work: None for T8 implementation. Fresh SoilGrids availability should 
 Exact next step: Claim T9, then add browser speech recognition with typed input fallback and optional spoken response.
 Blocker: SoilGrids returned HTTP 503 during this run; the unavailable path is transparent and safe.
 Commit: Completion commit.
+
+### 2026-10-31 — T9 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. T5 typed input and T6 streaming answer are present and pushed.
+Result: T9 is the sole active task.
+Remaining work: Add progressive-enhancement speech recognition and optional speech synthesis without removing typed input.
+Exact next step: Add browser capability guards, microphone controls, and spoken-answer controls to the existing page.
+Blocker: None currently.
+Commit: This claim commit.

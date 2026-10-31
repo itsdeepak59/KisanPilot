@@ -16,7 +16,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T6 | [x] Streaming agent route and tool trace protocol. | T3, T4, T5 | Agent calls tools and streams a source-stamped trace. |
 | T7 | [x] Trace panel. | T6 | Each call shows arguments, result state, source, timestamp, and cache age. |
 | T8 | [x] Soil tool and agent integration. | T1, T2, T6 | Soil facts use live or clearly labelled cached SoilGrids data. |
-| T9 | [ ] Voice input and spoken response. | T5, T6 | Speech recognition has a typed fallback; answer speech is optional and safe. |
+| T9 | [~] Voice input and spoken response. | T5, T6 | Speech recognition has a typed fallback; answer speech is optional and safe. |
 | T10 | [ ] Error and edge-case hardening. | T6, T8, T9 | Known failure paths produce a clear, non-fabricated response. |
 | T11 | [ ] Telegram webhook, alert run endpoint, and scheduled trigger. | T2, T6 | A linked real chat receives only an actual alert. |
 | T12 | [ ] Deployed phone end-to-end rehearsal. | T7, T10, T11 | Live URL works on a phone; findings are logged. |
@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T8 is complete. The SoilGrids tool is typed, cached for 30 days, and exposed to the agent; current provider 503 responses are surfaced transparently. T9 is the next eligible task.
+T9 is active. Add browser speech recognition with a typed fallback and optional answer speech. T8 is complete.
 
 ## Required note format
 
