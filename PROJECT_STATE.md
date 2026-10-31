@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **none**
-- Next eligible task: **T16 — Submission README, architecture diagram, and 5–7 slide pitch deck**
+- Active task: **T16 — Submission README, architecture diagram, and 5–7 slide pitch deck**
+- Next eligible task: **T16 — Submission README, architecture diagram, and 5–7 slide pitch deck (active)**
 - Application status: T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
@@ -392,3 +392,13 @@ Remaining work: Add Telugu as a complete profile, chat, voice, and UI language f
 Exact next step: Update the shared language type and UI/agent mappings, then run checks before live verification.
 Blocker: None.
 Commit: pending
+
+### 2026-10-31 — T16 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Confirmed `main` is up to date with `origin/main` before the claim.
+Result: T16 is the sole active task.
+Remaining work: Prepare public repository documentation, an architecture diagram, and a 5–7 slide pitch deck grounded in implemented, live-validated capabilities.
+Exact next step: Inspect existing repository assets and author the submission materials.
+Blocker: None.
+Commit: pending claim commit.
