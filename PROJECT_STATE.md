@@ -572,3 +572,13 @@ Remaining work: Push the implementation, verify the endpoint and agent tool agai
 Exact next step: Push this checkpoint and run a real decision-signal request on the updated Preview deployment.
 Blocker: None.
 Commit: pending implementation checkpoint.
+
+### 2026-10-31 — T21 Preview checkpoint
+Status: [~] active
+Files changed: `PROJECT_STATE.md`.
+Checks and real calls: Local ESLint, strict TypeScript, production build, diff check, and four decision-function tests passed. The updated code is pushed at commit `601d9b8`. The supplied fixed deployment URL and the branch alias `kisan-pilot-git-improve-navyora.vercel.app` both return homepage 200 but `/api/decisions/signals` returns 404, indicating they still serve a pre-T21 deployment.
+Result: T21 code is ready, but live Preview verification cannot yet run against the new route.
+Remaining work: Obtain the new Vercel Preview deployment URL or trigger/confirm a Vercel deployment for commit `601d9b8`, then verify live decision signals and the agent tool.
+Exact next step: Provide the new Preview URL from the deployment for `improve` commit `601d9b8`, or confirm when Vercel has deployed that commit.
+Blocker: Vercel Preview aliases are not serving the pushed T21 commit; no Vercel deployment control or CLI is available in this workspace.
+Commit: pending checkpoint.
