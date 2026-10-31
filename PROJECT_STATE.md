@@ -502,3 +502,13 @@ Remaining work: Verify a 429 response, a missing/wrong Telegram header (401), a 
 Exact next step: Add `TELEGRAM_WEBHOOK_SECRET` to Vercel Preview, re-register Telegram with it as `secret_token`, then provide the reachable `improve` preview URL or confirm its deployment so the required preview checks can run.
 Blocker: The secret is not configured locally, no Vercel preview URL is available in the repository, and preview environment-variable state cannot be inspected from this workspace without external Vercel access.
 Commit: pending checkpoint commit.
+
+### 2026-10-31 — T19 preview verification checkpoint
+Status: [~] active
+Files changed: `PROJECT_STATE.md`.
+Checks and real calls: The supplied preview URL returned homepage HTTP 200. Requests to `/api/telegram` without a header and with a wrong header were stopped by Vercel Authentication with HTTP 401 before reaching the application. A preview `/api/chat` request was also stopped by Vercel Authentication. The deployment reports `vercel_auth_enabled: true`; no Vercel CLI or authorized preview session is available in this workspace.
+Result: The preview deployment is reachable, but app-level verification of the matching Telegram secret, 429 response, and normal chat cannot be completed while Vercel Authentication shields the routes.
+Remaining work: Run the four required app-level checks against an authorized preview session, or temporarily disable Vercel Authentication for this preview deployment.
+Exact next step: Provide an authorized Vercel preview access path or disable Preview Deployment Protection, then rerun the checks.
+Blocker: Vercel Authentication is enabled on `kisan-pilot-k1cy9fzzd-navyora.vercel.app` and prevents route-level verification.
+Commit: pending checkpoint.
