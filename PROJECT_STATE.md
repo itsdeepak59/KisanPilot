@@ -423,6 +423,16 @@ Exact next step: Inspect available desktop browser and recording surfaces, then 
 Blocker: Submission destination and video-recording surface are not yet identified.
 Commit: pending claim commit.
 
+### 2026-10-31 — T18 checkpoint
+Status: [~] active
+Files changed: `PROJECT_STATE.md`.
+Checks and real calls: Confirmed `main` is current with `origin/main`. Inspected the available desktop surfaces. A Chrome window and a GitHub browser window are open, but local browser automation is disabled by the Work setting. No browser automation surface or open screen-recording application is available.
+Result: The real live-demo flow remains prepared and production-ready, but this environment cannot record or upload the video.
+Remaining work: Record a live browser demo showing profile save, Hindi voice-or-text advisory, tool trace, and protected alert check; upload it through the official hackathon destination.
+Exact next step: Provide or enable the recording/browser surface and the official submission URL, then record and upload the demo. Confirm immediately before the final external submission.
+Blocker: Browser automation is disabled by the Work setting, no recording surface is available, and the official submission destination is not identified.
+Commit: pending checkpoint commit.
+
 ### 2026-10-31 — T17 claim
 Status: [~] active
 Files changed: `TASKS.md`, `PROJECT_STATE.md`.
