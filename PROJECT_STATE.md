@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T14 — Official-advisory RAG**
-- Next eligible task: none while T14 is active
-- Application status: T14 is active. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **none**
+- Next eligible task: **T15 — Second regional language**
+- Application status: T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -82,6 +82,16 @@ Remaining work: Add the schema migration, server/browser clients, and profile sa
 Exact next step: Record the Supabase client integration decision, then implement the migration and persistence path.
 Blocker: The local `.env.local` has no nonempty Supabase URL, anon key, or service-role key, so live save/load validation is pending.
 Commit: This claim commit.
+
+### 2026-10-31 — T14 completion
+Status: [x] done
+Files changed: `lib/agent/tools/http.ts`, `lib/agent/tools/advisory.ts`, `lib/agent/agent.ts`, `TASKS.md`, `PROJECT_STATE.md`, `DECISIONS.md`
+Checks and real calls: ESLint passed; TypeScript passed; `next build` passed; local `/api/chat` real Gemini stream called `get_official_advisory` and returned a live ICAR URL plus `fetched_at` timestamp.
+Result: Official-advisory retrieval is implemented with an ICAR-only allowlist, eight-second timeout, one retry, typed success/failure, source URL, timestamp, and chemical-treatment sentence filtering.
+Remaining work: T15 is the next eligible task.
+Exact next step: Claim T15 in `TASKS.md` and `PROJECT_STATE.md` before writing code.
+Blocker: None.
+Commit: pending
 
 ### 2026-10-31 — T2 completion
 Status: [x] done

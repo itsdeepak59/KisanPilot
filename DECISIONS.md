@@ -15,6 +15,7 @@ Do not reverse or materially change a decision without adding a dated entry with
 - **D5 — 2026-10-30:** Use browser speech APIs with typed input as the complete fallback.
 - **D6 — 2026-10-30:** If the mandi source fails live validation, stop the dependent work and ask the human lead whether to repair it or pivot.
 - **D7 — 2026-10-30:** This repository uses one active AI agent at a time. `PROJECT_STATE.md` records the active task and required handoff so a later agent resumes precisely.
+- **D12 — 2026-10-31:** Official-advisory retrieval is restricted to an allowlisted ICAR advisory page, `https://icar.gov.in/en/kharif-agro-advisory-farmers`. The tool returns the live page URL and fetch timestamp, removes unsafe HTML, and omits chemical-treatment sentences; it does not invent topic-specific guidance when the official page has no readable content.
 
 ## API findings
 
