@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T11 — Telegram webhook, alert run endpoint, and scheduled trigger**
-- Application status: T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T11 — Telegram webhook, alert run endpoint, and scheduled trigger**
+- Next eligible task: none while T11 is active
+- Application status: T11 is active. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -262,3 +262,13 @@ Remaining work: None for T10.
 Exact next step: Claim T11, then implement Telegram webhook linking, alert evaluation, and protected scheduled execution.
 Blocker: Telegram bot token and cron secret availability must be checked before real Telegram delivery validation.
 Commit: Completion commit.
+
+### 2026-10-31 — T11 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. Telegram and cron variable names will be checked without printing values.
+Result: T11 is the sole active task.
+Remaining work: Implement Telegram webhook linking, alert evaluation, protected trigger, and Vercel schedule configuration.
+Exact next step: Inspect credential presence, then add the webhook and alert routes with live-weather/market-only alert decisions.
+Blocker: Real Telegram delivery requires `TELEGRAM_BOT_TOKEN`; protected and scheduled execution requires `CRON_SECRET`.
+Commit: This claim commit.
