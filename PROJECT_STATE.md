@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **none**
-- Next eligible task: **T18 — Record real demo and submit**
+- Active task: **T18 — Record real demo and submit**
+- Next eligible task: **T18 — Record real demo and submit (active)**
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -412,6 +412,16 @@ Remaining work: T17 — final production readiness review.
 Exact next step: Claim T17 and recheck production environment, secret presence, deployed routes, and demo-critical flows.
 Blocker: Local dependency installation is absent, so application lint/type/build checks need a restored `node_modules` before they can be rerun.
 Commit: pending completion commit.
+
+### 2026-10-31 — T18 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Confirmed `main` is up to date with `origin/main` before the claim.
+Result: T18 is the sole active task.
+Remaining work: Record a real browser demo with a saved profile, Hindi voice-or-text advisory, live source trace, and alert-check flow; submit through the official hackathon destination.
+Exact next step: Inspect available desktop browser and recording surfaces, then prepare the live demo flow.
+Blocker: Submission destination and video-recording surface are not yet identified.
+Commit: pending claim commit.
 
 ### 2026-10-31 — T17 claim
 Status: [~] active
