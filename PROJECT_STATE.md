@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T5 — Core chat and profile UI with language selection and typed input**
-- Application status: T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T5 — Core chat and profile UI with language selection and typed input**
+- Next eligible task: none while T5 is active
+- Application status: T5 is active. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -122,6 +122,16 @@ Remaining work: None for T3.
 Exact next step: Claim T4, then implement the data.gov.in mandi tool with district-first, state-fallback, actual arrival date, and typed no-data behavior.
 Blocker: None for T3.
 Commit: Completion commit.
+
+### 2026-10-31 — T5 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. Existing working-tree UI changes were inspected; no secrets were printed.
+Result: T5 is the sole active task.
+Remaining work: Complete and validate the core profile and typed-question UI.
+Exact next step: Run lint, strict TypeScript, production build, and a real profile save/load check through the production app.
+Blocker: None currently.
+Commit: This claim commit.
 
 ### 2026-10-31 — T4 claim
 Status: [~] active

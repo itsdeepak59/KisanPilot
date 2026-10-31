@@ -12,7 +12,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T2 | [x] Supabase schema, clients, and farm-profile persistence. | T0 | Migrations exist; a real profile can be saved and loaded by device ID. |
 | T3 | [x] Geocode and weather tools with typed responses and real-response caching. | T1, T2 | Real location and forecast calls work; cache behavior is visible. |
 | T4 | [x] Mandi tool with district-to-state fallback and no-data behavior. | T1, T2 | Real query returns source and arrival date, or a typed no-data result. |
-| T5 | [ ] Core chat and profile UI with language selection and typed input. | T0, T2 | Profile persists and a farmer can submit a question. |
+| T5 | [~] Core chat and profile UI with language selection and typed input. | T0, T2 | Profile persists and a farmer can submit a question. |
 | T6 | [ ] Streaming agent route and tool trace protocol. | T3, T4, T5 | Agent calls tools and streams a source-stamped trace. |
 | T7 | [ ] Trace panel. | T6 | Each call shows arguments, result state, source, timestamp, and cache age. |
 | T8 | [ ] Soil tool and agent integration. | T1, T2, T6 | Soil facts use live or clearly labelled cached SoilGrids data. |
@@ -29,7 +29,7 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 
 ## Current task notes
 
-T4 is complete. The data.gov.in mandi tool performs district-first and state-level fallback queries, returns actual arrival dates, caches live responses, and emits typed no-data errors. T5 is the next eligible task.
+T5 is active. Build the core profile and typed-question UI with language selection and device-based persistence. T4 is complete.
 
 ## Required note format
 
