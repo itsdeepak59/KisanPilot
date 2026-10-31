@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T4 — Mandi tool with district-to-state fallback and no-data behavior**
-- Application status: T3 is complete. Open-Meteo tools are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T4 — Mandi tool with district-to-state fallback and no-data behavior**
+- Next eligible task: none while T4 is active
+- Application status: T4 is active. T3 is complete; Open-Meteo tools are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -122,3 +122,13 @@ Remaining work: None for T3.
 Exact next step: Claim T4, then implement the data.gov.in mandi tool with district-first, state-fallback, actual arrival date, and typed no-data behavior.
 Blocker: None for T3.
 Commit: Completion commit.
+
+### 2026-10-31 — T4 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. `DATA_GOV_IN_API_KEY` is present in `.env.local`; its value was not printed.
+Result: T4 is the sole active task.
+Remaining work: Implement and live-test the data.gov.in mandi tool with district-to-state fallback and typed no-data behavior.
+Exact next step: Confirm the live dataset fields and query filters, then add the typed mandi tool using the shared request and cache helpers.
+Blocker: None currently.
+Commit: This claim commit.
