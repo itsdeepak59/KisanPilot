@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T5 — Core chat and profile UI with language selection and typed input**
-- Next eligible task: none while T5 is active
-- Application status: T5 is active. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: none
+- Next eligible task: **T6 — Streaming agent route and tool trace protocol**
+- Application status: T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -132,6 +132,16 @@ Remaining work: Complete and validate the core profile and typed-question UI.
 Exact next step: Run lint, strict TypeScript, production build, and a real profile save/load check through the production app.
 Blocker: None currently.
 Commit: This claim commit.
+
+### 2026-10-31 — T5 completion
+Status: [x] done
+Files changed: `app/page.tsx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed. The production app performed a real profile save and load through `/api/profile` using a unique validation device ID; the validation row was deleted afterward.
+Result: Replaced the placeholder page with a responsive profile and question flow. It creates a browser device ID, loads and saves language/location/district/state/crops, and captures typed questions with a transparent message that live advisory answers are part of T6.
+Remaining work: None for T5.
+Exact next step: Claim T6, then implement the streaming Gemini agent route and source-stamped tool trace protocol.
+Blocker: None for T5.
+Commit: Completion commit.
 
 ### 2026-10-31 — T4 claim
 Status: [~] active
