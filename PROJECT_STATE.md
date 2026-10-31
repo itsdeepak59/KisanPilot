@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T11 — Telegram webhook, alert run endpoint, and scheduled trigger**
-- Next eligible task: none while T11 is active
-- Application status: T11 is active. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: none
+- Next eligible task: **T12 — Deployed phone end-to-end rehearsal**
+- Application status: T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -292,3 +292,13 @@ Remaining work: Link one real farmer chat and run a real alert delivery check.
 Exact next step: In Telegram, send `/link <device_id>` to `KisanPilot_bot`, using the device ID displayed in the app, then rerun the webhook and alert checks.
 Blocker: No Telegram chat is linked yet, so no real delivery can be verified.
 Commit: Checkpoint commit.
+
+### 2026-10-31 — T11 completion
+Status: [x] done
+Files changed: `app/api/alerts/run/route.ts`, `app/api/telegram/route.ts`, `lib/telegram.ts`, `lib/db.ts`, `vercel.json`, `app/page.tsx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Telegram `getMe` succeeded for `KisanPilot_bot`; the deployed webhook replied to the real `/link` command; webhook pending updates reached zero; the protected alert run returned `ok: true`. The linked profile had no current 20 mm rain or 40 km/h wind threshold, so no message was sent. ESLint, strict TypeScript, and production build passed.
+Result: T11 is complete. Added Telegram linking, protected daily alert execution, place-name geocoding fallback, weather-only threshold evaluation, Telegram send retry handling, alert persistence, and Hobby-compatible daily cron configuration.
+Remaining work: None for T11. A future threshold event will test actual alert delivery; no fake alert was sent.
+Exact next step: Claim T12, then rehearse the deployed app on a phone-sized browser flow.
+Blocker: None for T11.
+Commit: Completion commit.

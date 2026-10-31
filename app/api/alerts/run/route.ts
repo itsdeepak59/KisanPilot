@@ -1,4 +1,5 @@
 import { getWeatherForecast } from "@/lib/agent/tools/weather";
+import { geocodeLocation } from "@/lib/agent/tools/geocode";
 import { createServerSupabaseClient } from "@/lib/supabase";
 import { sendTelegramMessage } from "@/lib/telegram";
 import { withDatabaseRetry } from "@/lib/db";
@@ -6,7 +7,7 @@ import { withDatabaseRetry } from "@/lib/db";
 const RAIN_ALERT_MM = 20;
 const WIND_ALERT_KMH = 40;
 
-type FarmerAlertRow = { id: string; lat: number | null; lon: number | null; telegram_chat_id: string | null };
+type FarmerAlertRow = { id: string; lat: number | null; lon: number | null; place_name: string | null; telegram_chat_id: string | null };
 
 function isAuthorized(request: Request): boolean {
   const secret = process.env.CRON_SECRET;
@@ -27,15 +28,28 @@ async function runAlerts(request: Request) {
   if (!process.env.TELEGRAM_BOT_TOKEN) return Response.json({ ok: false, error: "TELEGRAM_BOT_TOKEN is not configured" }, { status: 503 });
 
   try {
-    const { data: farmers, error } = await withDatabaseRetry(() => createServerSupabaseClient().from("farmers").select("id,lat,lon,telegram_chat_id").not("telegram_chat_id", "is", null).limit(100));
+    const { data: farmers, error } = await withDatabaseRetry(() => createServerSupabaseClient().from("farmers").select("id,lat,lon,place_name,telegram_chat_id").not("telegram_chat_id", "is", null).limit(100));
     if (error) throw error;
     const results: Array<{ farmer_id: string; sent: boolean; reason?: string }> = [];
     for (const farmer of (farmers ?? []) as FarmerAlertRow[]) {
-      if (farmer.lat === null || farmer.lon === null || !farmer.telegram_chat_id) {
+      if (!farmer.telegram_chat_id) {
         results.push({ farmer_id: farmer.id, sent: false, reason: "Missing coordinates or chat link" });
         continue;
       }
-      const weather = await getWeatherForecast(farmer.lat, farmer.lon, 2);
+      let latitude = farmer.lat;
+      let longitude = farmer.lon;
+      if ((latitude === null || longitude === null) && farmer.place_name) {
+        const geocoded = await geocodeLocation(farmer.place_name);
+        if (geocoded.ok) {
+          latitude = geocoded.data.latitude;
+          longitude = geocoded.data.longitude;
+        }
+      }
+      if (latitude === null || longitude === null) {
+        results.push({ farmer_id: farmer.id, sent: false, reason: "Missing coordinates or place name" });
+        continue;
+      }
+      const weather = await getWeatherForecast(latitude, longitude, 2);
       if (!weather.ok) {
         results.push({ farmer_id: farmer.id, sent: false, reason: "Weather unavailable" });
         continue;
