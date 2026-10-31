@@ -38,7 +38,7 @@ function scaled(value: number | null | undefined, divisor: number): number | nul
 
 export async function getSoilProfile(latitude: number, longitude: number): Promise<ToolResult<SoilProfile>> {
   const fetchedAt = new Date().toISOString();
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return { ok: false, error: "Valid coordinates are required", source: SOURCE, fetched_at: fetchedAt };
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) return { ok: false, error: "Valid coordinates are required", source: SOURCE, fetched_at: fetchedAt };
 
   const cacheKey = `soil:${latitude.toFixed(4)}:${longitude.toFixed(4)}`;
   const url = new URL("https://rest.isric.org/soilgrids/v2.0/properties/query");

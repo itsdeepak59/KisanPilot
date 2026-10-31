@@ -29,8 +29,8 @@ export type WeatherForecast = { latitude: number; longitude: number; days: Weath
 
 export async function getWeatherForecast(latitude: number, longitude: number, requestedDays = 7): Promise<ToolResult<WeatherForecast>> {
   const fetchedAt = new Date().toISOString();
-  const days = Math.min(7, Math.max(1, Math.floor(requestedDays)));
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return { ok: false, error: "Valid coordinates are required", source: SOURCE, fetched_at: fetchedAt };
+  const days = Number.isFinite(requestedDays) ? Math.min(7, Math.max(1, Math.floor(requestedDays))) : 7;
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) return { ok: false, error: "Valid coordinates are required", source: SOURCE, fetched_at: fetchedAt };
 
   const cacheKey = `weather:${latitude.toFixed(4)}:${longitude.toFixed(4)}:${days}`;
   const url = new URL("https://api.open-meteo.com/v1/forecast");

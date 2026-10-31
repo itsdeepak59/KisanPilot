@@ -93,6 +93,7 @@ export async function getMandiPrices(state: string, district: string, commodity:
   const apiKey = process.env.DATA_GOV_IN_API_KEY;
   if (!apiKey) return { ok: false, error: "DATA_GOV_IN_API_KEY is not configured", source: SOURCE, fetched_at: fetchedAt };
   if (!normalizedState || !normalizedDistrict || !normalizedCommodity) return { ok: false, error: "State, district, and commodity are required", source: SOURCE, fetched_at: fetchedAt };
+  if (normalizedState.length > 120 || normalizedDistrict.length > 120 || normalizedCommodity.length > 120) return { ok: false, error: "Mandi query is too long", source: SOURCE, fetched_at: fetchedAt };
 
   const districtKey = `mandi:${normalizedState.toLowerCase()}:${normalizedDistrict.toLowerCase()}:${normalizedCommodity.toLowerCase()}:district`;
   const districtResult = await queryMandi(apiKey, normalizedState, normalizedDistrict, normalizedCommodity);

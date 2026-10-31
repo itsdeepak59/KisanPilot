@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: **T10 — Error and edge-case hardening**
-- Next eligible task: none while T10 is active
-- Application status: T10 is active. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: none
+- Next eligible task: **T11 — Telegram webhook, alert run endpoint, and scheduled trigger**
+- Application status: T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -252,3 +252,13 @@ Remaining work: Add boundary validation and failure-path checks without weakenin
 Exact next step: Harden tool inputs and the SSE client/server failure paths, then run real invalid-input and unavailable-provider checks.
 Blocker: None currently.
 Commit: This claim commit.
+
+### 2026-10-31 — T10 completion
+Status: [x] done
+Files changed: `lib/agent/tools/geocode.ts`, `lib/agent/tools/weather.ts`, `lib/agent/tools/soil.ts`, `lib/agent/tools/mandi.ts`, `app/page.tsx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: Direct ESLint passed; strict TypeScript passed; production build passed. Real production-app invalid-input checks returned HTTP 400 for empty chat input and invalid profile lookup. Provider-unavailable paths remain explicit and non-fabricated.
+Result: Added bounded text inputs, coordinate range checks, finite forecast-day handling, malformed SSE event handling, and controlled validation failures.
+Remaining work: None for T10.
+Exact next step: Claim T11, then implement Telegram webhook linking, alert evaluation, and protected scheduled execution.
+Blocker: Telegram bot token and cron secret availability must be checked before real Telegram delivery validation.
+Commit: Completion commit.

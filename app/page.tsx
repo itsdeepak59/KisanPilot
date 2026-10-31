@@ -208,7 +208,13 @@ export default function Home() {
         for (const message of messages) {
           const line = message.split("\n").find((item) => item.startsWith("data: "));
           if (!line) continue;
-          const event = JSON.parse(line.slice(6)) as TraceEvent & { text?: string; error?: string };
+          let event: TraceEvent & { text?: string; error?: string };
+          try {
+            event = JSON.parse(line.slice(6)) as TraceEvent & { text?: string; error?: string };
+          } catch {
+            setQuestionMessage("The advisory stream returned an unreadable event. Please try again.");
+            continue;
+          }
           if (event.type === "text_delta" && event.text) setAnswer((current) => current + event.text);
           if (event.type === "tool_call" || event.type === "tool_result") setTrace((current) => [...current, event]);
           if (event.type === "error") throw new Error(event.error ?? "The advisory service is unavailable.");

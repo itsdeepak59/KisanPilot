@@ -29,6 +29,7 @@ export async function geocodeLocation(query: string): Promise<ToolResult<Geocode
   const normalizedQuery = query.trim();
   const fetchedAt = new Date().toISOString();
   if (!normalizedQuery) return { ok: false, error: "Location is required", source: SOURCE, fetched_at: fetchedAt };
+  if (normalizedQuery.length > 200) return { ok: false, error: "Location is too long", source: SOURCE, fetched_at: fetchedAt };
 
   const cacheKey = `geocode:${normalizedQuery.toLowerCase()}`;
   const url = new URL("https://geocoding-api.open-meteo.com/v1/search");
