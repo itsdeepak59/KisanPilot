@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T8 — Soil tool and agent integration**
-- Application status: T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
+- Active task: **T8 — Soil tool and agent integration**
+- Next eligible task: none while T8 is active
+- Application status: T8 is active. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -202,3 +202,13 @@ Remaining work: None for T7.
 Exact next step: Claim T8, then implement the SoilGrids tool and integrate soil data into the agent.
 Blocker: None for T7.
 Commit: Completion commit.
+
+### 2026-10-31 — T8 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. T1 SoilGrids smoke validation passed previously, and T6 agent integration is pushed.
+Result: T8 is the sole active task.
+Remaining work: Add typed SoilGrids pH, organic carbon, sand, silt, and clay data with 30-day cache behavior and wire the tool into the agent.
+Exact next step: Inspect one live SoilGrids response shape, then implement the parser and tool declaration.
+Blocker: None currently.
+Commit: This claim commit.
