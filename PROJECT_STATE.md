@@ -5,9 +5,9 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `main`
-- Active task: none
-- Next eligible task: **T3 — Geocode and weather tools with typed responses and real-response caching**
-- Application status: T2 is complete. The schema, Supabase clients, and profile persistence by device ID build successfully; live save/load verification awaits project credentials.
+- Active task: **T3 — Geocode and weather tools with typed responses and real-response caching**
+- Next eligible task: none while T3 is active
+- Application status: T3 is active. T2 is complete; its Supabase save/load path can now be verified against the credentials in `.env.local`.
 - Last documentation update: 2026-10-31
 - Blocking credentials: T2 requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`; Telegram and cron values are needed for T11.
 
@@ -92,3 +92,13 @@ Remaining work: Real profile save/load verification after Supabase credentials a
 Exact next step: Claim T3, then implement the Open-Meteo geocode and weather tools with typed live responses and real-response caching.
 Blocker: Supabase credentials are absent for live persistence validation.
 Commit: Pending completion commit.
+
+### 2026-10-31 — T3 claim
+Status: [~] active
+Files changed: `TASKS.md`, `PROJECT_STATE.md`.
+Checks and real calls: Claim recorded. `.env.local` is present; variable names were inspected without printing values.
+Result: T3 is the sole active task.
+Remaining work: Implement and validate the Open-Meteo geocoding and forecast tools with Supabase-backed response caching.
+Exact next step: Inspect the current Supabase schema/client types, then add the shared cache helper and two typed tools.
+Blocker: None currently.
+Commit: This claim commit.
