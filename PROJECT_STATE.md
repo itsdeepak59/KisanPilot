@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T24 — Demo robustness**
-- Next eligible task: none while T24 is active
+- Active task: none
+- Next eligible task: **T25 — Judge-facing UI polish**
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -672,3 +672,13 @@ Remaining work: Add demo robustness checks without adding sample business data, 
 Exact next step: Inspect existing smoke scripts and test setup, then add a CLI-driven cache warm script and edge-case matrix.
 Blocker: None.
 Commit: pending claim.
+
+### 2026-10-31 — T24 completion
+Status: [x] done
+Files changed: `scripts/warm/live-cache.mjs`, `scripts/test/edge-cases.mjs`, `docs/edge-case-matrix.md`, `package.json`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: `npm test` passed four pure decision-signal tests; `npm run lint` passed; `npx tsc --noEmit` passed; `npm run build` passed and emitted all application routes; `git diff --check` passed. `npm run test:edge` against `https://kisan-pilot-git-improve-navyora.vercel.app` returned the expected 400, 400, 404, 401, and 401 statuses for empty question, oversized question, unknown alert device, unauthorized cron, and unsigned Telegram webhook. The real-input `npm run warm` command was syntax-checked but not run because no operator-supplied place, state, district, crop, and deployment URL were invented.
+Result: T24 is complete. The repository now has a parameterized live cache-warm command, a deployed edge-case checker, a matrix marking each required case as passed or documented, and a standard dependency-free test command. No sample business data or fake provider result was added.
+Remaining work: T25 — judge-facing UI polish.
+Exact next step: Claim T25 in `TASKS.md` and `PROJECT_STATE.md`, then inspect the live answer layout at 360 px before making scoped UI changes.
+Blocker: None for T24. SoilGrids remains an external availability risk and must stay visibly unavailable when its provider fails.
+Commit: pending completion commit.
