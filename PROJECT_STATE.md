@@ -672,3 +672,13 @@ Remaining work: Add demo robustness checks without adding sample business data, 
 Exact next step: Inspect existing smoke scripts and test setup, then add a CLI-driven cache warm script and edge-case matrix.
 Blocker: None.
 Commit: pending claim.
+
+### 2026-11-01 — T24 implementation checkpoint
+Status: [~] active
+Files changed: `package.json`, `scripts/warm/alias-loader.mjs`, `scripts/warm/register-alias.mjs`, `scripts/warm/live-tools.ts`, `docs/edge-case-matrix.md`, `DECISIONS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: `npm test`, ESLint, strict TypeScript, and production build passed. `npm run warm --` correctly rejects missing operator-supplied location/crop arguments without making any external call. Credentialed live smoke checks passed for Open-Meteo geocoding and forecast, data.gov.in mandi, and Gemini function calling; SoilGrids returned HTML instead of JSON and was reported unavailable without fabricated data. The first build attempt was blocked by OneDrive locks in ignored `.next`; clearing only that generated cache allowed the passing build.
+Result: Added a no-dependency `npm test` command, an argument-only live cache warmer that invokes the existing typed tools and stores only successful real responses, plus the documented demo edge-case matrix. No default place, crop, weather, price, soil, or advisory data was added.
+Remaining work: Push this checkpoint; verify the updated `improve` Preview deployment and run `npm run warm` with the human-selected demo farm context if cache warming is wanted before the demo.
+Exact next step: After explicit approval to publish the repository to `origin`, push `improve`, then verify the Preview homepage and a live chat flow.
+Blocker: The execution environment requires explicit user approval before publishing to the unverified GitHub `origin`. A Preview deployment URL is not recorded in the repository. Fresh SoilGrids results remain dependent on provider availability.
+Commit: local checkpoint commit; push pending explicit approval.

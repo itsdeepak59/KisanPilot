@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "smoke": "node --env-file-if-exists=.env.local scripts/smoke/live-apis.mjs",
-    "test:decision": "node --experimental-strip-types --test scripts/test/decision-signals.test.mjs"
+    "test": "npm run test:decision",
+    "test:decision": "node --experimental-strip-types --test scripts/test/decision-signals.test.mjs",
+    "warm": "node --env-file-if-exists=.env.local --experimental-strip-types --import ./scripts/warm/register-alias.mjs scripts/warm/live-tools.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.109",
