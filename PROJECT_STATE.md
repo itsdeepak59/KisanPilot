@@ -692,3 +692,13 @@ Remaining work: Add a structured live answer presentation, visible source/freshn
 Exact next step: Add small pure presentation helpers and focused UI components without changing the chat protocol or live-data behavior.
 Blocker: None.
 Commit: pending claim commit.
+
+### 2026-11-01 — T25 implementation checkpoint
+Status: [~] active
+Files changed: `components/structured-answer.tsx`, `app/page.tsx`, and `PROJECT_STATE.md`.
+Checks and real calls: `npm run lint` passed; `npx tsc --noEmit` passed; `npm run build` passed and emitted all application routes; `git diff --check` passed. The existing Preview was inspected before deployment and showed the pre-T25 answer layout, so final visual verification is pending the new deployment.
+Result: Added a structured answer card with summary, dated action lines when present in the live answer, full-answer disclosure, source chips, and live/cached/unavailable freshness badges derived from tool-result metadata. Existing chat streaming, trace, speech, and data behavior are unchanged.
+Remaining work: Push this checkpoint, refresh the Preview deployment, and verify the updated page at 360 px and at a normal desktop width.
+Exact next step: Commit and push, then inspect the updated Preview DOM and screenshot for overflow or clipped controls.
+Blocker: None in code; the browser surface does not currently expose an explicit viewport override, so narrow-width verification may require a browser with responsive viewport controls.
+Commit: pending implementation commit.
