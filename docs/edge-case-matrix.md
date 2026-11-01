@@ -1,26 +1,24 @@
 # Demo edge-case matrix
 
-This matrix records checks that do not invent business data. Live rows use an operator-supplied Preview URL and real credentials/data; the warm command requires the operator to supply the real place, state, district, and crop.
+This matrix records the product's real-data failure behavior. It contains no test farm, forecast, price, soil, or advisory values. Run the verification commands with a real saved profile and configured credentials before a demo.
 
-| Case | Check | Expected behavior | Status / evidence |
+| Case | Expected behavior | Verification command or flow | Result |
 | --- | --- | --- | --- |
-| Empty question | `npm run test:edge` | HTTP 400 with a required-question error | PASS — deployed `improve` check on 2026-10-31 |
-| Very long question | `npm run test:edge` | HTTP 400; no model call | PASS — deployed `improve` check on 2026-10-31 |
-| Unknown alert device | `npm run test:edge` | HTTP 404; no Telegram message | PASS — deployed `improve` check on 2026-10-31 |
-| Cron without secret | `npm run test:edge` | HTTP 401 | PASS — deployed `improve` check on 2026-10-31 |
-| Telegram without webhook secret | `npm run test:edge` | HTTP 401 when Preview secret is configured | PASS — deployed `improve` check on 2026-10-31 |
-| Unknown place | Ask using a real unknown place supplied during the demo | Tool returns an unavailable/no-location result; no location is invented | DOCUMENTED — existing geocode unavailable path and tool trace from T10/T17 |
-| Ambiguous place | Ask using a real ambiguous place supplied during the demo | Geocoder result is shown; ask for clarification if the location is missing | DOCUMENTED — bounded geocode result and clarification rule in agent prompt |
-| Crop with no mandi data | Ask using a real crop supplied during the demo | Explicit no-data result or timestamped cache; no price is invented | DOCUMENTED — typed no-data/cache path in mandi tool |
-| Mixed language | Submit a real Hindi or Telugu question | Answer uses the selected language and retains source trace | PASS — Hindi and Telugu Preview checks recorded in T15/T17 |
-| SoilGrids unavailable | Run when provider returns non-JSON/5xx | Explicit unavailable state; no soil value is synthesized | PASS — provider-unavailable path recorded in T8/T17 |
-| Gemini rate limit | Exceed chat limit from one IP/device | Friendly HTTP 429 with `Retry-After` | PASS — bounded 429 check recorded in T19 |
-| Telegram not linked | Run alert check on a saved profile without chat link | Compare live forecast to thresholds; do not send a Telegram message | PASS — below-threshold Preview check recorded in T23 |
+| Unknown place | Geocoding returns a typed `Location was not found` result; no location is invented. | Ask the live chat about a deliberately unknown location. | Pending T24 live verification |
+| Ambiguous place | Open-Meteo's selected result and administrative fields remain visible in the trace; ask for clarification if the farmer needs a different place. | Ask using an ambiguous place name and inspect the geocode trace. | Pending T24 live verification |
+| Crop with no mandi data | The mandi tool returns typed no-data state, never a price. | Ask using a real profile and a commodity with no matching record. | Pending T24 live verification |
+| Mixed language | The selected profile language controls the reply while live-source trace fields remain intact. | Send a mixed-language question from each supported profile language. | Pending T24 live verification |
+| Empty or very long question | The API rejects invalid input with a clear JSON error before invoking Gemini. | Submit an empty question, then one longer than the route limit. | Pending T24 live verification |
+| SoilGrids unavailable | The trace identifies SoilGrids as unavailable or labels a cache with age; it never invents soil values. | Ask a soil question while the provider is unavailable, or inspect its explicit unavailable result. | Pending provider-state verification |
+| Gemini rate limit | The API returns a clear upstream failure; the UI shows it without a fabricated advisory. | Make a real request only if the provider rate limit occurs; do not force quota exhaustion. | Pending provider-state verification |
+| Telegram not linked | Alert check reports that delivery was skipped because no chat is linked, without creating a fake delivery. | Save a real profile without Telegram, then use Check alerts now. | Pending T24 live verification |
 
-## Parameterized cache warm
+## Cache warmer
 
-```text
-npm run warm -- --base-url <preview-url> --place <real-place> --state <real-state> --district <real-district> --crop <real-crop>
+Use only the farm context chosen for the demo. The command invokes the existing typed geocode, weather, soil, and mandi tools, which write successful live results to the configured cache and retain successful mandi observations.
+
+```bash
+npm run warm -- --place "<place>" --state "<state>" --district "<district>" --crop "<crop>"
 ```
 
-The command makes one real chat request that asks the live tools for weather, soil, mandi, and official-advisory data. It does not contain a built-in place, crop, price, weather value, or sample business record.
+Repeat `--crop` for each real crop. A tool failure makes the command exit nonzero and prints its source, timestamp, and error without substituting data.

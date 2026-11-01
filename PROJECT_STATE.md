@@ -675,9 +675,9 @@ Commit: pending claim.
 
 ### 2026-10-31 — T24 completion
 Status: [x] done
-Files changed: `scripts/warm/live-cache.mjs`, `scripts/test/edge-cases.mjs`, `docs/edge-case-matrix.md`, `package.json`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
+Files changed: `scripts/warm/live-tools.ts`, `scripts/warm/alias-loader.mjs`, `scripts/warm/register-alias.mjs`, `scripts/test/edge-cases.mjs`, `docs/edge-case-matrix.md`, `package.json`, `DECISIONS.md`, `TASKS.md`, and `PROJECT_STATE.md`.
 Checks and real calls: `npm test` passed four pure decision-signal tests; `npm run lint` passed; `npx tsc --noEmit` passed; `npm run build` passed and emitted all application routes; `git diff --check` passed. `npm run test:edge` against `https://kisan-pilot-git-improve-navyora.vercel.app` returned the expected 400, 400, 404, 401, and 401 statuses for empty question, oversized question, unknown alert device, unauthorized cron, and unsigned Telegram webhook. The real-input `npm run warm` command was syntax-checked but not run because no operator-supplied place, state, district, crop, and deployment URL were invented.
-Result: T24 is complete. The repository now has a parameterized live cache-warm command, a deployed edge-case checker, a matrix marking each required case as passed or documented, and a standard dependency-free test command. No sample business data or fake provider result was added.
+Result: T24 is complete. The repository now has a parameterized live cache-warm command that invokes the typed live tools, a deployed edge-case checker, a matrix for the required failure paths, and a standard dependency-free test command. No sample business data or fake provider result was added.
 Remaining work: T25 — judge-facing UI polish.
 Exact next step: Claim T25 in `TASKS.md` and `PROJECT_STATE.md`, then inspect the live answer layout at 360 px before making scoped UI changes.
 Blocker: None for T24. SoilGrids remains an external availability risk and must stay visibly unavailable when its provider fails.
