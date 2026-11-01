@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: none
-- Next eligible task: **T25 — Judge-facing UI polish**
+- Active task: **T25 — Judge-facing UI polish**
+- Next eligible task: none while T25 is active
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -682,3 +682,13 @@ Remaining work: T25 — judge-facing UI polish.
 Exact next step: Claim T25 in `TASKS.md` and `PROJECT_STATE.md`, then inspect the live answer layout at 360 px before making scoped UI changes.
 Blocker: None for T24. SoilGrids remains an external availability risk and must stay visibly unavailable when its provider fails.
 Commit: pending completion commit.
+
+### 2026-11-01 — T25 claim
+Status: [~] active
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: T24 local gates and deployed edge-case checks are recorded above; no T25 code changes made yet.
+Result: T25 is the sole active task.
+Remaining work: Add a structured live answer presentation, visible source/freshness badges derived from the existing trace, and verify the layout at 360 px and on the improvement Preview.
+Exact next step: Add small pure presentation helpers and focused UI components without changing the chat protocol or live-data behavior.
+Blocker: None.
+Commit: pending claim commit.
