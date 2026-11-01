@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T25 — Judge-facing UI polish**
-- Next eligible task: none while T25 is active
+- Active task: **T26 — Documentation sync**
+- Next eligible task: none while T26 is active
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -702,3 +702,13 @@ Remaining work: Verify the updated page at an exact 360 px viewport and on a rea
 Exact next step: Use a browser/device surface with explicit 360 px viewport controls, inspect the answer card and form for overflow, then record the result.
 Blocker: None in code; the browser surface does not currently expose an explicit viewport override, so narrow-width verification may require a browser with responsive viewport controls.
 Commit: pending implementation commit.
+
+### 2026-11-01 — T25 completion and T26 claim
+Status: [~] active
+Files changed: `TASKS.md` and `PROJECT_STATE.md`.
+Checks and real calls: The improve Preview was refreshed and visually inspected in the available narrow browser surface. A live non-secret diagnostic request to the Preview returned HTTP 200, a complete SSE body with a `done` event, and no error event. The supplied browser screenshot showed a transient `ERR_CONNECTION_RESET` after HTTP 200; the SoilGrids HTTP 503 was surfaced explicitly and remains an external provider condition. Exact 360 px and real-phone checks were unavailable in this environment and are recorded as a remaining human visual check.
+Result: T25 is complete under the user's instruction to move forward when an unavailable verification surface cannot be obtained. The structured answer card, source freshness badges, and narrow-layout improvements are deployed on `improve` without changing live-data behavior. T26 is now the sole active task.
+Remaining work: Synchronize README, architecture diagram, and pitch materials with the shipped T19–T25 behavior, then validate the regenerated deck.
+Exact next step: Audit documentation claims against the current routes and UI, update only stale claims, and regenerate/validate the PPTX if the bundled presentation workflow is available.
+Blocker: Exact 360 px and physical-phone verification remain human follow-up checks; no code blocker remains.
+Commit: pending T25 completion and T26 claim commit.

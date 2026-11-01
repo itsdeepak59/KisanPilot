@@ -31,14 +31,14 @@ Only one task may be `[~]` at a time. The active task must match `PROJECT_STATE.
 | T22 | [x] Official-advisory retrieval upgrade: several verified official sources, chunking, topic ranking, season awareness. | T20 | Answers cite the top ranked chunks with real URLs and fetch times; topic changes the result; no invented sources. |
 | T23 | [x] Demoable alerts: farmer-set thresholds, a device-scoped Check alerts now button, alert history in the UI. | T19 | A real forecast above the farmer's own threshold sends a real Telegram message; below it shows the comparison and sends nothing. |
 | T24 | [x] Demo robustness: cache warm script, edge-case matrix with fixes, small automated tests. | T21, T22, T23 | Every matrix row is pass or documented; `npm test`, lint, tsc and build pass. |
-| T25 | [~] Judge-facing UI polish: structured answer card, freshness badges, mobile layout. | T24 | Checked at 360 px width and on a real phone; no layout break; no mock content. |
-| T26 | [ ] Documentation sync: README, architecture diagram, and deck match what actually ships. | T25 | No claim in README, deck, or pitch exceeds the code; PPTX regenerated and validated. |
+| T25 | [x] Judge-facing UI polish: structured answer card, freshness badges, mobile layout. | T24 | Checked at 360 px width and on a real phone; no layout break; no mock content. |
+| T26 | [~] Documentation sync: README, architecture diagram, and deck match what actually ships. | T25 | No claim in README, deck, or pitch exceeds the code; PPTX regenerated and validated. |
 | — | **FEATURE FREEZE.** After this row only bug fixes and T18. | T26 | Production on `main` matches the tested preview. |
 | T18 | [!] **Human-only.** Record real demo and submit. Agents must not claim or resume this task. | T17, and T19–T26 shipped or consciously skipped | Video shows the live product and tool trace; submission is uploaded by a human. |
 
 ## Current task notes
 
-Phase 2 (improvement) is active. T0–T24 are complete and deployed to the improvement preview. T25 is active. T18 is human-only and must not be claimed by any agent.
+Phase 2 (improvement) is active. T0–T25 are complete and deployed to the improvement preview. T26 is active. T18 is human-only and must not be claimed by any agent.
 Take the first unchecked task from T19 onward, in order. Follow the "Phase 2 operating rules" in `AGENTS.md`: work on branch `improve`, never push to `main`, and verify on the Vercel preview URL.
 
 ## Phase 2 task details
