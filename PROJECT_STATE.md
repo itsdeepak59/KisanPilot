@@ -696,9 +696,9 @@ Commit: pending claim commit.
 ### 2026-11-01 — T25 implementation checkpoint
 Status: [~] active
 Files changed: `components/structured-answer.tsx`, `app/page.tsx`, and `PROJECT_STATE.md`.
-Checks and real calls: `npm run lint` passed; `npx tsc --noEmit` passed; `npm run build` passed and emitted all application routes; `git diff --check` passed. The existing Preview was inspected before deployment and showed the pre-T25 answer layout, so final visual verification is pending the new deployment.
+Checks and real calls: `npm run lint` passed; `npx tsc --noEmit` passed; `npm run build` passed and emitted all application routes; `git diff --check` passed. The improve Preview now serves commit `086e129`; its live page was refreshed and visually inspected in the browser surface with no visible clipping in the available narrow view. The existing browser surface does not expose an exact 360 px viewport override, so that exact check remains open.
 Result: Added a structured answer card with summary, dated action lines when present in the live answer, full-answer disclosure, source chips, and live/cached/unavailable freshness badges derived from tool-result metadata. Existing chat streaming, trace, speech, and data behavior are unchanged.
-Remaining work: Push this checkpoint, refresh the Preview deployment, and verify the updated page at 360 px and at a normal desktop width.
-Exact next step: Commit and push, then inspect the updated Preview DOM and screenshot for overflow or clipped controls.
+Remaining work: Verify the updated page at an exact 360 px viewport and on a real phone before marking T25 complete.
+Exact next step: Use a browser/device surface with explicit 360 px viewport controls, inspect the answer card and form for overflow, then record the result.
 Blocker: None in code; the browser surface does not currently expose an explicit viewport override, so narrow-width verification may require a browser with responsive viewport controls.
 Commit: pending implementation commit.
