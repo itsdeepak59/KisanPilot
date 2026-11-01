@@ -5,8 +5,8 @@ This file is the operational source of truth for the next human or AI agent. Upd
 ## Current state
 
 - Branch: `improve`
-- Active task: **T26 — Documentation sync**
-- Next eligible task: none while T26 is active
+- Active task: none
+- Next eligible task: none before FEATURE FREEZE; only bug fixes and human-only T18 remain
 - Application status: T16 is complete. T14 is complete. T13 is complete. T12 is complete. T11 is complete. T10 is complete. T9 is complete. T8 is complete. T7 is complete. T6 is complete. T5 is complete. T4 is complete. T3 is complete; Open-Meteo tools and the data.gov.in mandi tool are implemented and live-validated, and the configured Supabase project exposes the `public.api_cache` table.
 - Last documentation update: 2026-10-31
 - Blocking credentials: None locally. SoilGrids remains an external-provider availability risk.
@@ -712,3 +712,23 @@ Remaining work: Synchronize README, architecture diagram, and pitch materials wi
 Exact next step: Audit documentation claims against the current routes and UI, update only stale claims, and regenerate/validate the PPTX if the bundled presentation workflow is available.
 Blocker: Exact 360 px and physical-phone verification remain human follow-up checks; no code blocker remains.
 Commit: pending T25 completion and T26 claim commit.
+
+### 2026-11-01 — T26 implementation checkpoint
+Status: [~] active
+Files changed: `README.md`, `docs/architecture-diagram.md`, `docs/pitch-deck.md`, `docs/output/kisanpilot-forge-pitch.pptx`, and `PROJECT_STATE.md`.
+Checks and real calls: Documentation audit removed stale five-tool and single-ICAR-source claims and added the shipped structured answer, freshness badges, decision signals, six-tool agent, and multi-source advisory behavior. The regenerated seven-slide PPTX passed package integrity, slide count, 16:9 geometry, font-policy, and first-party Artifact Tool import validation. All seven slides were rendered and visually reviewed; no clipping or overlap was observed. `npm run lint`, `npx tsc --noEmit`, and `git diff --check` passed. The default Turbopack build hit its known local CSS-worker panic; after clearing only generated `.next`, `npm run build -- --webpack` passed with all routes emitted. Application behavior was unchanged.
+Result: T26 documentation and deck now match the implemented T19–T25 product behavior, with known provider and human visual-verification limitations preserved.
+Remaining work: None for T26.
+Exact next step: Human merges `improve` to `main` after reviewing the Preview; only bug fixes and human-only T18 remain.
+Blocker: None for T26 documentation. Exact 360 px and physical-phone T25 checks remain human follow-up evidence.
+Commit: pending completion commit.
+
+### 2026-11-01 — T26 completion
+Status: [x] done
+Files changed: `README.md`, `docs/architecture-diagram.md`, `docs/pitch-deck.md`, `docs/output/kisanpilot-forge-pitch.pptx`, `TASKS.md`, and `PROJECT_STATE.md`.
+Checks and real calls: The synchronized README, architecture diagram, pitch narrative, and seven-slide deck match the shipped six-tool agent, multi-source official advisories, decision signals, structured answer card, and freshness badges. PPTX package integrity, slide count, geometry, font policy, first-party import, rendering, and visual review passed. Lint, strict TypeScript, Webpack production build, and diff checks passed.
+Result: T26 is complete. Phase 2 improvement work T19–T26 is complete on branch `improve`.
+Remaining work: Human review and merge of `improve` to `main`, plus human-only T18 demo recording/submission. Bug fixes remain allowed after the feature freeze.
+Exact next step: Review the improve Preview, merge `improve` to `main` when satisfied, and complete T18 manually.
+Blocker: Exact 360 px and physical-phone T25 checks remain human follow-up evidence; SoilGrids may remain unavailable when its provider returns 5xx/HTML.
+Commit: pending completion commit.

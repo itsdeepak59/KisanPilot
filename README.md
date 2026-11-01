@@ -10,6 +10,8 @@ Built for Forge by NxtWave, Theme 2: Climate, Resource Infrastructure & Global S
 - Questions in English, Hindi, or Telugu through text or browser speech recognition.
 - A streaming Gemini agent that can call live geocoding, forecast, mandi, soil, and official-advisory tools.
 - A transparency trace with tool inputs, result state, source, fetch time, and cache age where applicable.
+- A structured answer card with a summary, dated action lines when present, full-answer disclosure, and live/cached/unavailable source badges.
+- Transparent decision signals for harvest-weather planning, seven-day water balance, and mandi sell/hold history when enough live observations exist.
 - A mandi trend chart populated only from successful live data.gov.in observations retained by the app.
 - Telegram `/link <device_id>` linking and a protected daily alert job for live weather-risk thresholds.
 
@@ -26,9 +28,11 @@ Farm decisions often depend on weather, market arrivals, soil conditions, and se
 | Location and forecast | [Open-Meteo](https://open-meteo.com/) | Coordinates, administrative context, daily rain, temperature, wind, and ET0 |
 | Mandi prices | [data.gov.in](https://data.gov.in/) | Market identity, arrival date, minimum, maximum, and modal price |
 | Soil profile | [ISRIC SoilGrids](https://soilgrids.org/) | 0–5 cm pH, organic carbon, sand, silt, and clay when available |
-| Farm guidance | [ICAR](https://icar.gov.in/en/kharif-agro-advisory-farmers) | Live official-advisory URL and fetch time |
+| Farm guidance | [ICAR](https://icar.gov.in/en/kharif-agro-advisory-farmers) and [IMD](https://imdagrimet.gov.in/) | Ranked official-advisory matches with source URLs and fetch times |
 
 Every external data tool uses an eight-second timeout, one retry with backoff, error handling, and a typed result envelope. Successful responses can be cached with their original fetch time. When a fresh source is unavailable, the interface identifies missing data or labels cached data with its age. KisanPilot never invents weather, prices, soil values, dates, sources, or API responses.
+
+The agent can also compute transparent planning heuristics from live forecast data and retained mandi observations. These signals show their inputs, rule, and sample size, and return an insufficient-history state when the required real history is missing.
 
 KisanPilot does not provide pesticide or chemical dosage. It directs the farmer to a local KVK or agriculture officer for that advice.
 
@@ -46,7 +50,8 @@ flowchart LR
   Agent --> Weather[Open-Meteo forecast]
   Agent --> Mandi[data.gov.in mandi]
   Agent --> Soil[ISRIC SoilGrids]
-  Agent --> ICAR[ICAR advisory]
+  Agent --> Advisory[ICAR and IMD advisory retrieval]
+  Agent --> Signals[Decision signals]
   Agent <--> Cache[Supabase api_cache]
   Profile <--> DB[Supabase profiles\nadvisories and observations]
   Chat --> DB
@@ -98,9 +103,13 @@ npm run lint
 npx tsc --noEmit
 npm run build
 npm run smoke
+npm test
+npm run test:edge
 ```
 
 `npm run smoke` makes live provider checks, so it requires configured Gemini and data.gov.in credentials. The current project handoff and recorded real-call results live in `PROJECT_STATE.md`.
+
+`npm run test:edge` checks the deployed Preview URL when `KISANPILOT_BASE_URL` is set. `npm run warm` requires an operator-supplied real place, state, district, and crop; it does not contain sample farm data.
 
 ## Submission materials
 
